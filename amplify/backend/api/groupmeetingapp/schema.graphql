@@ -1,0 +1,24 @@
+type Group @model {
+  id: ID!
+  name: String!
+  meetings: [Meeting] @connection(fields: ["id"])
+  members: [Member] @connection(fields: ["id"])
+}
+
+type Meeting @model @key(name: "byGroup", fields: ["groupId"]) {
+  id: ID!
+  title: String!
+  description: String!
+  groupId: ID!
+  group: Group @connection(fields: ["groupId"])
+}
+
+type Member @model @key(name: "byGroup", fields: ["groupId"]) {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  email: String!
+  mobileNumber: String!
+  groupId: ID!
+  group: Group @connection(fields: ["groupId"])
+}
