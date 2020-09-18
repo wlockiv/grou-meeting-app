@@ -3,7 +3,6 @@
 //  This file was automatically generated and should not be edited.
 
 export type CreateGroupInput = {
-  id?: string | null,
   name: string,
 };
 
@@ -64,7 +63,6 @@ export type DeleteGroupInput = {
 };
 
 export type CreateMeetingInput = {
-  id?: string | null,
   title: string,
   description: string,
   groupId: string,
@@ -107,7 +105,6 @@ export type DeleteMeetingInput = {
 };
 
 export type CreateMemberInput = {
-  id?: string | null,
   firstName: string,
   lastName: string,
   email: string,

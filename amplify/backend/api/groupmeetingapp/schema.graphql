@@ -22,3 +22,21 @@ type Member @model @key(name: "byGroup", fields: ["groupId"]) {
   groupId: ID!
   group: Group @connection(fields: ["groupId"])
 }
+
+input CreateGroupInput {
+  name: String!
+}
+
+input CreateMeetingInput {
+  title: String!
+  description: String!
+  groupId: ID!
+}
+
+input CreateMemberInput {
+  firstName: String!
+  lastName: String!
+  email: String!
+  mobileNumber: String!
+  groupId: ID!
+}
