@@ -20,11 +20,11 @@ import Layout from '~/components/layout';
 import SEO from '~/components/seo';
 import { createGroup, deleteGroup } from '~/graphql/mutations';
 import { listGroups } from '~/graphql/queries';
-import { Group } from '~/graphql/types';
+// import { Group } from '~/graphql/types';
 
 const IndexPage = () => {
   const [formState, setFormState] = useState({ name: '' });
-  const [groups, setGroups] = useState<Array<Group>>([]);
+  const [groups, setGroups] = useState<Array<any>>([]);
 
   useEffect(() => {
     fetchGroups();
@@ -47,7 +47,7 @@ const IndexPage = () => {
       )) as GraphQLResult<ListGroupsQuery>;
 
       if (data && data.listGroups) {
-        setGroups(data.listGroups.items as Array<Group> | []);
+        setGroups(data.listGroups.items as Array<any> | []);
       }
     } catch (error) {
       console.error('There was a problem fetching groups:\n', error);
@@ -88,7 +88,7 @@ const IndexPage = () => {
     );
   };
 
-  function generateGroupList(groups: Group[]) {
+  function generateGroupList(groups: any[]) {
     return (
       <Stack>
         {groups.map(({ id, name }) => (

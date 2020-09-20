@@ -1,8 +1,16 @@
-type Group @model {
+# TODO: Add administrator role to Cognito Pool to be able to CRUD orphaned records
+type Group
+@model
+@auth(
+  rules: [
+    { allow: owner, operations: [create, delete, update] }
+    { allow: private, operations: [read] }
+  ]
+) {
   id: ID!
   name: String!
-  meetings: [Meeting] @connection(fields: ["id"])
-  members: [Member] @connection(fields: ["id"])
+  meetings: [Meeting] @connection(keyName: "byGroup", fields: ["id"])
+  members: [Member] @connection(keyName: "byGroup", fields: ["id"])
 }
 
 type Meeting @model @key(name: "byGroup", fields: ["groupId"]) {
@@ -13,6 +21,7 @@ type Meeting @model @key(name: "byGroup", fields: ["groupId"]) {
   group: Group @connection(fields: ["groupId"])
 }
 
+# TODO: Make it so a member can belong to more than one group (many-to-many)
 type Member @model @key(name: "byGroup", fields: ["groupId"]) {
   id: ID!
   firstName: String!
@@ -23,10 +32,12 @@ type Member @model @key(name: "byGroup", fields: ["groupId"]) {
   group: Group @connection(fields: ["groupId"])
 }
 
+# ! A custom resolver was assigned to auto-gen the ID field
 input CreateGroupInput {
   name: String!
 }
 
+# ! A custom resolver was assigned to auto-gen the ID field
 input CreateMeetingInput {
   title: String!
   description: String!

@@ -1,5 +1,11 @@
 {
     "AppSyncApiName": "groupmeetingapp",
     "DynamoDBBillingMode": "PAY_PER_REQUEST",
-    "DynamoDBEnableServerSideEncryption": false
+    "DynamoDBEnableServerSideEncryption": false,
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authgroupmeetingapp8cd75c07",
+            "Outputs.UserPoolId"
+        ]
+    }
 }
