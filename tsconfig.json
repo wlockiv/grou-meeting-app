@@ -18,5 +18,5 @@
     }
   },
   "include": ["src/**/*", "root-element-wrapper.tsx"],
-  "exclude": ["node_modules", "public", ".cache"]
+  "exclude": ["node_modules", "public", ".cache", "amplify"]
 }

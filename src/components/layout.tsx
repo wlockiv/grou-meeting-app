@@ -8,20 +8,24 @@
 import { Avatar, Button, Flex, HStack, Text } from '@chakra-ui/core';
 import { navigate } from '@reach/router';
 import { graphql, useStaticQuery } from 'gatsby';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { logout } from '~/services/auth';
 
 type LayoutProps = {
   children: React.ReactNode;
-  currentUser:
+  currentUser?:
     | {
         email: string;
       }
     | undefined;
+  title?: string;
 };
 
-const Layout: React.FC<LayoutProps> = ({ children, currentUser }) => {
+const Layout: React.FC<LayoutProps> = ({
+  children,
+  currentUser,
+  title,
+}: LayoutProps) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -46,14 +50,14 @@ const Layout: React.FC<LayoutProps> = ({ children, currentUser }) => {
       <Flex
         mb={6}
         w="100%"
-        px={5}
+        px={3}
         py={4}
         bg="gray.700"
         justifyContent="space-between"
       >
         <HStack>
           <Text pl={3} color="white">
-            Group App
+            Group App {`/ ${title ? title : data.site.siteMetadata.title}`}
           </Text>
         </HStack>
         {currentUser ? (
@@ -77,10 +81,6 @@ const Layout: React.FC<LayoutProps> = ({ children, currentUser }) => {
       </footer>
     </>
   );
-};
-
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
 };
 
 export default Layout;

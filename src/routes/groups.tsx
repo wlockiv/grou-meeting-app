@@ -2,19 +2,20 @@ import { GraphQLResult } from '@aws-amplify/api';
 import {
   Box,
   Button,
+  Center,
   FormControl,
   FormHelperText,
   FormLabel,
   Heading,
+  HStack,
   IconButton,
   Input,
-  Stack,
-  HStack,
-  Text,
   Spinner,
-  Center,
+  Stack,
+  Text,
 } from '@chakra-ui/core';
 import { DeleteIcon } from '@chakra-ui/icons';
+import { RouteComponentProps } from '@reach/router';
 import { API, graphqlOperation } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
 import { ListGroupsQuery } from '~/API';
@@ -22,7 +23,6 @@ import Layout from '~/components/layout';
 import SEO from '~/components/seo';
 import { createGroup, deleteGroup } from '~/graphql/mutations';
 import { listGroups } from '~/graphql/queries';
-import { RouteComponentProps } from '@reach/router';
 import { getUser, isLoggedIn } from '~/services/auth';
 
 const GroupsRoute: React.FC<RouteComponentProps> = () => {
@@ -52,7 +52,7 @@ const GroupsRoute: React.FC<RouteComponentProps> = () => {
   async function fetchGroups(): Promise<void> {
     try {
       const { data } = (await API.graphql(
-        graphqlOperation(listGroups)
+        graphqlOperation(listGroups),
       )) as GraphQLResult<ListGroupsQuery>;
 
       if (data && data.listGroups) {
@@ -90,7 +90,7 @@ const GroupsRoute: React.FC<RouteComponentProps> = () => {
     }
   }
 
-  const GroupBox = ({
+  const GroupRow = ({
     groupId,
     name,
     editable,
@@ -120,7 +120,7 @@ const GroupsRoute: React.FC<RouteComponentProps> = () => {
     return (
       <Stack>
         {groups.map(({ id, name, owner }) => (
-          <GroupBox
+          <GroupRow
             key={id}
             groupId={id}
             editable={userSub === owner}
