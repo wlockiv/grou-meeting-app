@@ -31,6 +31,7 @@ export const getGroup = /* GraphQL */ `
         }
         nextToken
       }
+      owner
       createdAt
       updatedAt
     }
@@ -52,6 +53,7 @@ export const listGroups = /* GraphQL */ `
         members {
           nextToken
         }
+        owner
         createdAt
         updatedAt
       }
@@ -75,6 +77,7 @@ export const getMeeting = /* GraphQL */ `
         members {
           nextToken
         }
+        owner
         createdAt
         updatedAt
       }
@@ -98,6 +101,7 @@ export const listMeetings = /* GraphQL */ `
         group {
           id
           name
+          owner
           createdAt
           updatedAt
         }
@@ -126,6 +130,7 @@ export const getMember = /* GraphQL */ `
         members {
           nextToken
         }
+        owner
         createdAt
         updatedAt
       }
@@ -151,6 +156,7 @@ export const listMembers = /* GraphQL */ `
         group {
           id
           name
+          owner
           createdAt
           updatedAt
         }

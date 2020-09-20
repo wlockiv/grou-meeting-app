@@ -1,9 +1,9 @@
-# TODO: Add administrator role to Cognito Pool to be able to CRUD orphaned records
 type Group
 @model
 @auth(
   rules: [
     { allow: owner, operations: [create, delete, update] }
+    { allow: groups, groups: ["admin"], operations: [create, delete, update] }
     { allow: private, operations: [read] }
   ]
 ) {
@@ -11,6 +11,7 @@ type Group
   name: String!
   meetings: [Meeting] @connection(keyName: "byGroup", fields: ["id"])
   members: [Member] @connection(keyName: "byGroup", fields: ["id"])
+  owner: String
 }
 
 type Meeting @model @key(name: "byGroup", fields: ["groupId"]) {
@@ -44,6 +45,7 @@ input CreateMeetingInput {
   groupId: ID!
 }
 
+# ! A custom resolver was assigned to auto-gen the ID field
 input CreateMemberInput {
   firstName: String!
   lastName: String!

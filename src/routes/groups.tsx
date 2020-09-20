@@ -11,6 +11,8 @@ import {
   Stack,
   HStack,
   Text,
+  Spinner,
+  Center,
 } from '@chakra-ui/core';
 import { DeleteIcon } from '@chakra-ui/icons';
 import { API, graphqlOperation } from 'aws-amplify';
@@ -20,26 +22,32 @@ import Layout from '~/components/layout';
 import SEO from '~/components/seo';
 import { createGroup, deleteGroup } from '~/graphql/mutations';
 import { listGroups } from '~/graphql/queries';
-// import { Group } from '~/graphql/types';
 import { RouteComponentProps } from '@reach/router';
+import { getUser, isLoggedIn } from '~/services/auth';
 
 const GroupsRoute: React.FC<RouteComponentProps> = () => {
   const [formState, setFormState] = useState({ name: '' });
   const [groups, setGroups] = useState<Array<any>>([]);
+  const [currentUser, setCurrentUser] = useState<CognitoUserInfo>();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let mounted = true;
+    const fetchUser = async () => {
+      const status = await isLoggedIn();
+      if (mounted && status) {
+        setCurrentUser(await getUser());
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
     fetchGroups();
+
+    return () => {
+      mounted = false;
+    };
   }, []);
-
-  function handleInputChange(event: React.ChangeEvent<HTMLInputElement>): void {
-    const { name, value } = event.target;
-    setFormState({ ...formState, [name]: value });
-  }
-
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
-    event.preventDefault();
-    addGroup();
-  }
 
   async function fetchGroups(): Promise<void> {
     try {
@@ -53,6 +61,16 @@ const GroupsRoute: React.FC<RouteComponentProps> = () => {
     } catch (error) {
       console.error('There was a problem fetching groups:\n', error);
     }
+  }
+
+  function handleInputChange(event: React.ChangeEvent<HTMLInputElement>): void {
+    const { name, value } = event.target;
+    setFormState({ ...formState, [name]: value });
+  }
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
+    event.preventDefault();
+    addGroup();
   }
 
   async function handleDelete(id: string) {
@@ -72,7 +90,15 @@ const GroupsRoute: React.FC<RouteComponentProps> = () => {
     }
   }
 
-  const GroupBox = ({ groupId, name }: { groupId: string; name: string }) => {
+  const GroupBox = ({
+    groupId,
+    name,
+    editable,
+  }: {
+    groupId: string;
+    name: string;
+    editable: boolean;
+  }) => {
     return (
       <HStack as={Box} p={2} shadow="sm" borderWidth="1px" borderRadius="md">
         <Text textTransform="uppercase">{name}</Text>
@@ -84,49 +110,65 @@ const GroupsRoute: React.FC<RouteComponentProps> = () => {
           onClick={() => {
             handleDelete(groupId);
           }}
+          disabled={!editable}
         />
       </HStack>
     );
   };
 
-  const generateGroupList = (groups: any[]) => (
-    <Stack>
-      {groups.map(({ id, name }) => (
-        <GroupBox key={id} groupId={id} name={name} />
-      ))}
-    </Stack>
-  );
+  const generateGroupList = (groups: any[], userSub: string) => {
+    return (
+      <Stack>
+        {groups.map(({ id, name, owner }) => (
+          <GroupBox
+            key={id}
+            groupId={id}
+            editable={userSub === owner}
+            name={name}
+          />
+        ))}
+      </Stack>
+    );
+  };
 
   return (
-    <Layout>
+    <Layout currentUser={currentUser}>
       <SEO title="Home" />
-      <Box as="form" maxW="sm" mb={12} mx="auto" onSubmit={handleSubmit}>
-        <Stack spacing={3} m="auto">
-          <FormControl id="name">
-            <FormLabel htmlFor="name">Group Name</FormLabel>
-            <Input
-              name="name"
-              isRequired
-              value={formState.name}
-              onChange={handleInputChange}
-              aria-describedby="What would you like to name the group?"
-              placeholder="Ravenclaw"
-            />
-            <FormHelperText>
-              What would you like to name your new group?
-            </FormHelperText>
-          </FormControl>
-          <Button colorScheme="teal" type="submit">
-            Create Group!
-          </Button>
-        </Stack>
-      </Box>
-      <Box id="group-list" maxWidth="sm" margin="auto">
-        <Heading mb={4} textAlign="center">
-          Existing Groups
-        </Heading>
-        {generateGroupList(groups)}
-      </Box>
+      {loading ? (
+        <Center h="50vh">
+          <Spinner size="xl" />
+        </Center>
+      ) : (
+        <>
+          <Box as="form" maxW="sm" mb={12} mx="auto" onSubmit={handleSubmit}>
+            <Stack spacing={3} m="auto">
+              <FormControl id="name">
+                <FormLabel htmlFor="name">Group Name</FormLabel>
+                <Input
+                  name="name"
+                  isRequired
+                  value={formState.name}
+                  onChange={handleInputChange}
+                  aria-describedby="What would you like to name the group?"
+                  placeholder="Ravenclaw"
+                />
+                <FormHelperText>
+                  What would you like to name your new group?
+                </FormHelperText>
+              </FormControl>
+              <Button colorScheme="teal" type="submit">
+                Create Group!
+              </Button>
+            </Stack>
+          </Box>
+          <Box id="group-list" maxWidth="sm" margin="auto">
+            <Heading mb={4} textAlign="center">
+              Existing Groups
+            </Heading>
+            {generateGroupList(groups, currentUser ? currentUser.username : '')}
+          </Box>
+        </>
+      )}
     </Layout>
   );
 };

@@ -5,13 +5,23 @@
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-import React from 'react';
+import { Avatar, Button, Flex, HStack, Text } from '@chakra-ui/core';
+import { navigate } from '@reach/router';
+import { graphql, useStaticQuery } from 'gatsby';
 import PropTypes from 'prop-types';
-import { useStaticQuery, graphql } from 'gatsby';
+import React from 'react';
+import { logout } from '~/services/auth';
 
-import Header from './header';
+type LayoutProps = {
+  children: React.ReactNode;
+  currentUser:
+    | {
+        email: string;
+      }
+    | undefined;
+};
 
-const Layout = ({ children }) => {
+const Layout: React.FC<LayoutProps> = ({ children, currentUser }) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -22,14 +32,48 @@ const Layout = ({ children }) => {
     }
   `);
 
+  async function handleLogout(): Promise<void> {
+    await logout();
+    await navigate('/');
+  }
+
+  async function handleSignIn(): Promise<void> {
+    await navigate('/app/groups');
+  }
+
   return (
     <>
-      <Header siteTitle={data.site.siteMetadata.title} />
+      <Flex
+        mb={6}
+        w="100%"
+        px={5}
+        py={4}
+        bg="gray.700"
+        justifyContent="space-between"
+      >
+        <HStack>
+          <Text pl={3} color="white">
+            Group App
+          </Text>
+        </HStack>
+        {currentUser ? (
+          <HStack>
+            <Button mr={2} size="sm" onClick={handleLogout}>
+              Log Out
+            </Button>
+            <Avatar name={currentUser.email} size="sm" />
+          </HStack>
+        ) : (
+          <Button mr={2} size="sm" onClick={handleSignIn}>
+            Sign In
+          </Button>
+        )}
+      </Flex>
       <main>{children}</main>
       <footer>
-        © {new Date().getFullYear()}, Built with
+        {/* © {new Date().getFullYear()}, Built with
         {` `}
-        <a href="https://www.gatsbyjs.org">Gatsby</a>
+        <a href="https://www.gatsbyjs.org">Gatsby</a> */}
       </footer>
     </>
   );

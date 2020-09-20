@@ -34,6 +34,7 @@ export const createGroup = /* GraphQL */ `
         }
         nextToken
       }
+      owner
       createdAt
       updatedAt
     }
@@ -71,6 +72,7 @@ export const updateGroup = /* GraphQL */ `
         }
         nextToken
       }
+      owner
       createdAt
       updatedAt
     }
@@ -108,6 +110,7 @@ export const deleteGroup = /* GraphQL */ `
         }
         nextToken
       }
+      owner
       createdAt
       updatedAt
     }
@@ -132,6 +135,7 @@ export const createMeeting = /* GraphQL */ `
         members {
           nextToken
         }
+        owner
         createdAt
         updatedAt
       }
@@ -159,6 +163,7 @@ export const updateMeeting = /* GraphQL */ `
         members {
           nextToken
         }
+        owner
         createdAt
         updatedAt
       }
@@ -186,6 +191,7 @@ export const deleteMeeting = /* GraphQL */ `
         members {
           nextToken
         }
+        owner
         createdAt
         updatedAt
       }
@@ -215,6 +221,7 @@ export const createMember = /* GraphQL */ `
         members {
           nextToken
         }
+        owner
         createdAt
         updatedAt
       }
@@ -244,6 +251,7 @@ export const updateMember = /* GraphQL */ `
         members {
           nextToken
         }
+        owner
         createdAt
         updatedAt
       }
@@ -273,6 +281,7 @@ export const deleteMember = /* GraphQL */ `
         members {
           nextToken
         }
+        owner
         createdAt
         updatedAt
       }

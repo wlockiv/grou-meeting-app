@@ -31,6 +31,7 @@ export const onCreateGroup = /* GraphQL */ `
         }
         nextToken
       }
+      owner
       createdAt
       updatedAt
     }
@@ -65,6 +66,7 @@ export const onUpdateGroup = /* GraphQL */ `
         }
         nextToken
       }
+      owner
       createdAt
       updatedAt
     }
@@ -99,6 +101,7 @@ export const onDeleteGroup = /* GraphQL */ `
         }
         nextToken
       }
+      owner
       createdAt
       updatedAt
     }
@@ -120,6 +123,7 @@ export const onCreateMeeting = /* GraphQL */ `
         members {
           nextToken
         }
+        owner
         createdAt
         updatedAt
       }
@@ -144,6 +148,7 @@ export const onUpdateMeeting = /* GraphQL */ `
         members {
           nextToken
         }
+        owner
         createdAt
         updatedAt
       }
@@ -168,6 +173,7 @@ export const onDeleteMeeting = /* GraphQL */ `
         members {
           nextToken
         }
+        owner
         createdAt
         updatedAt
       }
@@ -194,6 +200,7 @@ export const onCreateMember = /* GraphQL */ `
         members {
           nextToken
         }
+        owner
         createdAt
         updatedAt
       }
@@ -220,6 +227,7 @@ export const onUpdateMember = /* GraphQL */ `
         members {
           nextToken
         }
+        owner
         createdAt
         updatedAt
       }
@@ -246,6 +254,7 @@ export const onDeleteMember = /* GraphQL */ `
         members {
           nextToken
         }
+        owner
         createdAt
         updatedAt
       }
