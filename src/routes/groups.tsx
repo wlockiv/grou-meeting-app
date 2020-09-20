@@ -18,16 +18,18 @@ import { DeleteIcon } from '@chakra-ui/icons';
 import { RouteComponentProps } from '@reach/router';
 import { API, graphqlOperation } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
-import { ListGroupsQuery } from '~/API';
 import Layout from '~/components/layout';
 import SEO from '~/components/seo';
 import { createGroup, deleteGroup } from '~/graphql/mutations';
 import { listGroups } from '~/graphql/queries';
 import { getUser, isLoggedIn } from '~/services/auth';
+import * as APIt from '~/API';
+
+type Group = Omit<Exclude<APIt.GetGroupQuery['getGroup'], null>, '__typename'>;
 
 const GroupsRoute: React.FC<RouteComponentProps> = () => {
   const [formState, setFormState] = useState({ name: '' });
-  const [groups, setGroups] = useState<Array<any>>([]);
+  const [groups, setGroups] = useState<Array<Group>>([]);
   const [currentUser, setCurrentUser] = useState<CognitoUserInfo>();
   const [loading, setLoading] = useState(true);
 
@@ -53,10 +55,10 @@ const GroupsRoute: React.FC<RouteComponentProps> = () => {
     try {
       const { data } = (await API.graphql(
         graphqlOperation(listGroups),
-      )) as GraphQLResult<ListGroupsQuery>;
+      )) as GraphQLResult<APIt.ListGroupsQuery>;
 
       if (data && data.listGroups) {
-        setGroups(data.listGroups.items as Array<any> | []);
+        setGroups(data.listGroups.items as Array<Group> | []);
       }
     } catch (error) {
       console.error('There was a problem fetching groups:\n', error);
@@ -116,7 +118,7 @@ const GroupsRoute: React.FC<RouteComponentProps> = () => {
     );
   };
 
-  const generateGroupList = (groups: any[], userSub: string) => {
+  const generateGroupList = (groups: Array<Group>, userSub: string) => {
     return (
       <Stack>
         {groups.map(({ id, name, owner }) => (

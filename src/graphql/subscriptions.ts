@@ -11,6 +11,7 @@ export const onCreateGroup = /* GraphQL */ `
         items {
           id
           title
+          date
           description
           groupId
           createdAt
@@ -46,6 +47,7 @@ export const onUpdateGroup = /* GraphQL */ `
         items {
           id
           title
+          date
           description
           groupId
           createdAt
@@ -81,6 +83,7 @@ export const onDeleteGroup = /* GraphQL */ `
         items {
           id
           title
+          date
           description
           groupId
           createdAt
@@ -112,6 +115,7 @@ export const onCreateMeeting = /* GraphQL */ `
     onCreateMeeting {
       id
       title
+      date
       description
       groupId
       group {
@@ -137,6 +141,7 @@ export const onUpdateMeeting = /* GraphQL */ `
     onUpdateMeeting {
       id
       title
+      date
       description
       groupId
       group {
@@ -162,6 +167,7 @@ export const onDeleteMeeting = /* GraphQL */ `
     onDeleteMeeting {
       id
       title
+      date
       description
       groupId
       group {

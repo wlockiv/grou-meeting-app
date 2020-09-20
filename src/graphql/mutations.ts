@@ -14,6 +14,7 @@ export const createGroup = /* GraphQL */ `
         items {
           id
           title
+          date
           description
           groupId
           createdAt
@@ -52,6 +53,7 @@ export const updateGroup = /* GraphQL */ `
         items {
           id
           title
+          date
           description
           groupId
           createdAt
@@ -90,6 +92,7 @@ export const deleteGroup = /* GraphQL */ `
         items {
           id
           title
+          date
           description
           groupId
           createdAt
@@ -124,6 +127,7 @@ export const createMeeting = /* GraphQL */ `
     createMeeting(input: $input, condition: $condition) {
       id
       title
+      date
       description
       groupId
       group {
@@ -152,6 +156,7 @@ export const updateMeeting = /* GraphQL */ `
     updateMeeting(input: $input, condition: $condition) {
       id
       title
+      date
       description
       groupId
       group {
@@ -180,6 +185,7 @@ export const deleteMeeting = /* GraphQL */ `
     deleteMeeting(input: $input, condition: $condition) {
       id
       title
+      date
       description
       groupId
       group {

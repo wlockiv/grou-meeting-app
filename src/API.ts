@@ -64,13 +64,15 @@ export type DeleteGroupInput = {
 };
 
 export type CreateMeetingInput = {
+  groupId: string,
   title: string,
   description: string,
-  groupId: string,
+  date?: string | null,
 };
 
 export type ModelMeetingConditionInput = {
   title?: ModelStringInput | null,
+  date?: ModelStringInput | null,
   description?: ModelStringInput | null,
   groupId?: ModelIDInput | null,
   and?: Array< ModelMeetingConditionInput | null > | null,
@@ -97,6 +99,7 @@ export type ModelIDInput = {
 export type UpdateMeetingInput = {
   id: string,
   title?: string | null,
+  date?: string | null,
   description?: string | null,
   groupId?: string | null,
 };
@@ -149,6 +152,7 @@ export type ModelGroupFilterInput = {
 export type ModelMeetingFilterInput = {
   id?: ModelIDInput | null,
   title?: ModelStringInput | null,
+  date?: ModelStringInput | null,
   description?: ModelStringInput | null,
   groupId?: ModelIDInput | null,
   and?: Array< ModelMeetingFilterInput | null > | null,
@@ -184,6 +188,7 @@ export type CreateGroupMutation = {
         __typename: "Meeting",
         id: string,
         title: string,
+        date: string | null,
         description: string,
         groupId: string,
         createdAt: string,
@@ -228,6 +233,7 @@ export type UpdateGroupMutation = {
         __typename: "Meeting",
         id: string,
         title: string,
+        date: string | null,
         description: string,
         groupId: string,
         createdAt: string,
@@ -272,6 +278,7 @@ export type DeleteGroupMutation = {
         __typename: "Meeting",
         id: string,
         title: string,
+        date: string | null,
         description: string,
         groupId: string,
         createdAt: string,
@@ -310,6 +317,7 @@ export type CreateMeetingMutation = {
     __typename: "Meeting",
     id: string,
     title: string,
+    date: string | null,
     description: string,
     groupId: string,
     group:  {
@@ -343,6 +351,7 @@ export type UpdateMeetingMutation = {
     __typename: "Meeting",
     id: string,
     title: string,
+    date: string | null,
     description: string,
     groupId: string,
     group:  {
@@ -376,6 +385,7 @@ export type DeleteMeetingMutation = {
     __typename: "Meeting",
     id: string,
     title: string,
+    date: string | null,
     description: string,
     groupId: string,
     group:  {
@@ -519,6 +529,7 @@ export type GetGroupQuery = {
         __typename: "Meeting",
         id: string,
         title: string,
+        date: string | null,
         description: string,
         groupId: string,
         createdAt: string,
@@ -585,6 +596,7 @@ export type GetMeetingQuery = {
     __typename: "Meeting",
     id: string,
     title: string,
+    date: string | null,
     description: string,
     groupId: string,
     group:  {
@@ -621,6 +633,7 @@ export type ListMeetingsQuery = {
       __typename: "Meeting",
       id: string,
       title: string,
+      date: string | null,
       description: string,
       groupId: string,
       group:  {
@@ -715,6 +728,7 @@ export type OnCreateGroupSubscription = {
         __typename: "Meeting",
         id: string,
         title: string,
+        date: string | null,
         description: string,
         groupId: string,
         createdAt: string,
@@ -754,6 +768,7 @@ export type OnUpdateGroupSubscription = {
         __typename: "Meeting",
         id: string,
         title: string,
+        date: string | null,
         description: string,
         groupId: string,
         createdAt: string,
@@ -793,6 +808,7 @@ export type OnDeleteGroupSubscription = {
         __typename: "Meeting",
         id: string,
         title: string,
+        date: string | null,
         description: string,
         groupId: string,
         createdAt: string,
@@ -826,6 +842,7 @@ export type OnCreateMeetingSubscription = {
     __typename: "Meeting",
     id: string,
     title: string,
+    date: string | null,
     description: string,
     groupId: string,
     group:  {
@@ -854,6 +871,7 @@ export type OnUpdateMeetingSubscription = {
     __typename: "Meeting",
     id: string,
     title: string,
+    date: string | null,
     description: string,
     groupId: string,
     group:  {
@@ -882,6 +900,7 @@ export type OnDeleteMeetingSubscription = {
     __typename: "Meeting",
     id: string,
     title: string,
+    date: string | null,
     description: string,
     groupId: string,
     group:  {

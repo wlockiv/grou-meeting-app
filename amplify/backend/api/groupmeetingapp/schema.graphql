@@ -41,9 +41,10 @@ input CreateGroupInput {
 
 # ! A custom resolver was assigned to auto-gen the ID field
 input CreateMeetingInput {
+  groupId: ID!
   title: String!
   description: String!
-  groupId: ID!
+  date: AWSDateTime
 }
 
 # ! A custom resolver was assigned to auto-gen the ID field

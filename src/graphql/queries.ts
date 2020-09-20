@@ -11,6 +11,7 @@ export const getGroup = /* GraphQL */ `
         items {
           id
           title
+          date
           description
           groupId
           createdAt
@@ -66,6 +67,7 @@ export const getMeeting = /* GraphQL */ `
     getMeeting(id: $id) {
       id
       title
+      date
       description
       groupId
       group {
@@ -96,6 +98,7 @@ export const listMeetings = /* GraphQL */ `
       items {
         id
         title
+        date
         description
         groupId
         group {
