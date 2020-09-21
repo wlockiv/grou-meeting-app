@@ -7,25 +7,21 @@ import {
   FormHelperText,
   FormLabel,
   Heading,
-  HStack,
-  IconButton,
   Input,
   Spinner,
   Stack,
-  Text,
 } from '@chakra-ui/core';
-import { DeleteIcon } from '@chakra-ui/icons';
 import { RouteComponentProps } from '@reach/router';
 import { API, graphqlOperation } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
+import * as APIt from '~/API';
+import { GroupList } from '~/components';
 import Layout from '~/components/layout';
 import SEO from '~/components/seo';
 import { createGroup, deleteGroup } from '~/graphql/mutations';
 import { listGroups } from '~/graphql/queries';
+import { Group } from '~/graphql/types';
 import { getUser, isLoggedIn } from '~/services/auth';
-import * as APIt from '~/API';
-
-type Group = Omit<Exclude<APIt.GetGroupQuery['getGroup'], null>, '__typename'>;
 
 const GroupsRoute: React.FC<RouteComponentProps> = () => {
   const [formState, setFormState] = useState({ name: '' });
@@ -92,47 +88,6 @@ const GroupsRoute: React.FC<RouteComponentProps> = () => {
     }
   }
 
-  const GroupRow = ({
-    groupId,
-    name,
-    editable,
-  }: {
-    groupId: string;
-    name: string;
-    editable: boolean;
-  }) => {
-    return (
-      <HStack as={Box} p={2} shadow="sm" borderWidth="1px" borderRadius="md">
-        <Text textTransform="uppercase">{name}</Text>
-        <IconButton
-          size="xs"
-          icon={<DeleteIcon />}
-          aria-label={`Delete ${name}`}
-          style={{ marginLeft: 'auto' }}
-          onClick={() => {
-            handleDelete(groupId);
-          }}
-          disabled={!editable}
-        />
-      </HStack>
-    );
-  };
-
-  const generateGroupList = (groups: Array<Group>, userSub: string) => {
-    return (
-      <Stack>
-        {groups.map(({ id, name, owner }) => (
-          <GroupRow
-            key={id}
-            groupId={id}
-            editable={userSub === owner}
-            name={name}
-          />
-        ))}
-      </Stack>
-    );
-  };
-
   return (
     <Layout currentUser={currentUser}>
       <SEO title="Home" />
@@ -167,7 +122,11 @@ const GroupsRoute: React.FC<RouteComponentProps> = () => {
             <Heading mb={4} textAlign="center">
               Existing Groups
             </Heading>
-            {generateGroupList(groups, currentUser ? currentUser.username : '')}
+            <GroupList
+              groups={groups}
+              userSub={currentUser ? currentUser.username : ''}
+              handleDelete={handleDelete}
+            />
           </Box>
         </>
       )}

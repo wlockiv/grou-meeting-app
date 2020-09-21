@@ -1,12 +1,11 @@
 // eslint-disable-next-line no-undef
 module.exports = {
-  env: {
-    browser: true,
-    es2021: true,
-    node: true,
-  },
+  // env: {
+  //   browser: true,
+  //   es2021: true,
+  //   node: true,
+  // },
   extends: [
-    'eslint:recommended',
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
     'prettier/@typescript-eslint',
@@ -26,5 +25,8 @@ module.exports = {
     },
   },
   plugins: ['react', '@typescript-eslint'],
-  rules: {},
+  rules: {
+    'react/prop-types': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',
+  },
 };
