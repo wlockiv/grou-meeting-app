@@ -11,12 +11,11 @@
     "esModuleInterop": true,
     "noUnusedLocals": false,
     "allowJs": true,
-    "typeRoots": ["./node_modules/@types", "./src/graphql", "./src/@types"],
     "baseUrl": ".",
     "paths": {
       "~/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*", "root-element-wrapper.tsx"],
-  "exclude": ["node_modules", "public", ".cache", "amplify"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "public", ".cache", "amplify", ".vscode"]
 }
