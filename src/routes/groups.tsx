@@ -89,7 +89,7 @@ const GroupsRoute: React.FC<RouteComponentProps> = () => {
   }
 
   return (
-    <Layout currentUser={currentUser}>
+    <Layout currentUser={currentUser} title={'Home'}>
       <SEO title="Home" />
       {loading ? (
         <Center h="50vh">
