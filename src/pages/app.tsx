@@ -3,7 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { withAuthenticator } from '@aws-amplify/ui-react';
 import GroupsHome from '~/routes/groups-home';
 import { GroupList, Layout, NavDrawer } from '~/components';
-import { Container, useDisclosure, Spinner, IconButton } from '@chakra-ui/core';
+import {
+  Center,
+  Container,
+  useDisclosure,
+  Spinner,
+  IconButton,
+} from '@chakra-ui/core';
 import { Group } from '~/graphql/types';
 import { getUser, isLoggedIn } from '~/services/auth';
 import { API, graphqlOperation } from 'aws-amplify';
@@ -59,7 +65,9 @@ const AppPage: React.FC = () => {
   return (
     <Layout>
       {loading ? (
-        <Spinner />
+        <Center height={'50vh'}>
+          <Spinner size={'lg'} />
+        </Center>
       ) : (
         <Container maxW={'100vw'}>
           <IconButton
