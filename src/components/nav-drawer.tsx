@@ -1,42 +1,32 @@
-import React from 'react';
 import {
-  Button,
   Drawer,
-  useDisclosure,
-  DrawerOverlay,
+  DrawerBody,
+  DrawerCloseButton,
   DrawerContent,
   DrawerHeader,
-  DrawerCloseButton,
-  DrawerBody,
-  Text,
+  DrawerOverlay,
 } from '@chakra-ui/core';
+import React from 'react';
 
 type NavDrawerProps = {
   isOpen: boolean;
-  onOpen(): void;
   onClose(): void;
+  onOpen?(): void;
 };
 
-const NavDrawer: React.FC<NavDrawerProps> = ({ isOpen, onOpen, onClose }) => {
-  // @ts-ignore
+const NavDrawer: React.FC<NavDrawerProps> = ({
+  isOpen,
+  // onOpen,
+  onClose,
+  children,
+}) => {
   return (
-    <Drawer
-      isOpen={isOpen}
-      placement="left"
-      onClose={onClose}
-      // finalFocusRef={btnRef as any}
-    >
+    <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
       <DrawerOverlay>
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader>Your Groups</DrawerHeader>
-          <DrawerBody>
-            <Text>First Group Here</Text>
-            <Text>Second Group Here</Text>
-            <Text>Third Group Here</Text>
-            <Text>Fourth Group Here</Text>
-            <Text>Fifth Group Here</Text>
-          </DrawerBody>
+          <DrawerBody>{children}</DrawerBody>
         </DrawerContent>
       </DrawerOverlay>
     </Drawer>

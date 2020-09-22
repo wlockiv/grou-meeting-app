@@ -3,19 +3,23 @@ import {
   Box,
   Button,
   Center,
+  Container,
   FormControl,
   FormHelperText,
   FormLabel,
   Heading,
+  IconButton,
   Input,
   Spinner,
   Stack,
+  useDisclosure,
 } from '@chakra-ui/core';
+import { ChevronRightIcon } from '@chakra-ui/icons';
 import { RouteComponentProps } from '@reach/router';
 import { API, graphqlOperation } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
 import * as APIt from '~/API';
-import { GroupList } from '~/components';
+import { GroupList, NavDrawer } from '~/components';
 import Layout from '~/components/layout';
 import SEO from '~/components/seo';
 import { createGroup, deleteGroup } from '~/graphql/mutations';
@@ -46,6 +50,12 @@ const GroupsRoute: React.FC<RouteComponentProps> = () => {
       mounted = false;
     };
   }, []);
+
+  const {
+    isOpen: isNavOpen,
+    onOpen: onNavOpen,
+    onClose: onNavClose,
+  } = useDisclosure();
 
   async function fetchGroups(): Promise<void> {
     try {
@@ -96,7 +106,21 @@ const GroupsRoute: React.FC<RouteComponentProps> = () => {
           <Spinner size="xl" />
         </Center>
       ) : (
-        <>
+        <Container maxW="100vw">
+          <IconButton
+            icon={<ChevronRightIcon />}
+            aria-label={'Open menu'}
+            onClick={onNavOpen}
+            borderRadius="full"
+            colorScheme="pink"
+          />
+          <NavDrawer isOpen={isNavOpen} onOpen={onNavOpen} onClose={onNavClose}>
+            <GroupList
+              groups={groups}
+              userSub={currentUser ? currentUser.username : ''}
+              handleDelete={handleDelete}
+            />
+          </NavDrawer>
           <Box as="form" maxW="sm" mb={12} mx="auto" onSubmit={handleSubmit}>
             <Stack spacing={3} m="auto">
               <FormControl id="name">
@@ -128,7 +152,7 @@ const GroupsRoute: React.FC<RouteComponentProps> = () => {
               handleDelete={handleDelete}
             />
           </Box>
-        </>
+        </Container>
       )}
     </Layout>
   );

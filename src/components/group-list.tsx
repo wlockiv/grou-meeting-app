@@ -1,24 +1,22 @@
-import React from 'react';
 import {
   Box,
   HStack,
-  useRadio,
-  Text,
-  IconButton,
-  useRadioGroup,
   Stack,
+  Text,
+  useRadio,
+  useRadioGroup,
 } from '@chakra-ui/core';
-import { DeleteIcon } from '@chakra-ui/icons';
+import React from 'react';
 import { Group } from '~/graphql/types';
 
 type GroupRowProps = {
   group: Group;
-  editable: boolean;
-  onDelete(id: string): void;
+  editable: boolean; // ? Repurpose "belongsToGroup"?
+  onDelete(id: string): void; // ? Unecessary?
 };
 
 const GroupRow: React.FC<GroupRowProps> = props => {
-  const { group, onDelete: handleDelete, editable } = props;
+  const { group } = props;
   const { getInputProps, getCheckboxProps } = useRadio(
     // @ts-ignore
     props,
@@ -48,7 +46,7 @@ const GroupRow: React.FC<GroupRowProps> = props => {
         }}
       >
         <Text textTransform="uppercase">{group.name}</Text>
-        <IconButton
+        {/* <IconButton
           size="xs"
           icon={<DeleteIcon />}
           aria-label={`Delete ${group.name}`}
@@ -57,7 +55,7 @@ const GroupRow: React.FC<GroupRowProps> = props => {
             handleDelete(group.id);
           }}
           disabled={!editable}
-        />
+        /> */}
       </HStack>
     </Box>
   );

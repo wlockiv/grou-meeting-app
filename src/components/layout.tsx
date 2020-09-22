@@ -5,21 +5,11 @@
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-import {
-  Button,
-  Flex,
-  HStack,
-  Text,
-  IconButton,
-  useDisclosure,
-} from '@chakra-ui/core';
-import { HamburgerIcon } from '@chakra-ui/icons';
-
+import { Button, Flex, HStack, Text } from '@chakra-ui/core';
 import { navigate } from '@reach/router';
 import { graphql, useStaticQuery } from 'gatsby';
 import React from 'react';
 import { logout } from '~/services/auth';
-import { NavDrawer } from '~/components';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -46,12 +36,6 @@ const Layout: React.FC<LayoutProps> = ({
     }
   `);
 
-  const {
-    isOpen: isNavOpen,
-    onOpen: onNavOpen,
-    onClose: onNavClose,
-  } = useDisclosure();
-
   async function handleLogout(): Promise<void> {
     await logout();
     await navigate('/');
@@ -72,12 +56,6 @@ const Layout: React.FC<LayoutProps> = ({
         justifyContent="space-between"
       >
         <HStack>
-          <IconButton
-            icon={<HamburgerIcon />}
-            aria-label={'Open menu'}
-            size={'sm'}
-            onClick={onNavOpen}
-          />
           <Text pl={3} color="white">
             Groups {`/ ${title ? title : data.site.siteMetadata.title}`}
           </Text>
@@ -94,13 +72,8 @@ const Layout: React.FC<LayoutProps> = ({
           </Button>
         )}
       </Flex>
-      <NavDrawer isOpen={isNavOpen} onOpen={onNavOpen} onClose={onNavClose} />
       <main>{children}</main>
-      <footer>
-        {/* © {new Date().getFullYear()}, Built with
-        {` `}
-        <a href="https://www.gatsbyjs.org">Gatsby</a> */}
-      </footer>
+      <footer></footer>
     </>
   );
 };
