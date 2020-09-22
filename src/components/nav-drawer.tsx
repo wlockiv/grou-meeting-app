@@ -14,12 +14,7 @@ type NavDrawerProps = {
   onOpen?(): void;
 };
 
-const NavDrawer: React.FC<NavDrawerProps> = ({
-  isOpen,
-  // onOpen,
-  onClose,
-  children,
-}) => {
+const NavDrawer: React.FC<NavDrawerProps> = ({ isOpen, onClose, children }) => {
   return (
     <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
       <DrawerOverlay>

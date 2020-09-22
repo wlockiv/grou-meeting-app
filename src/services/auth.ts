@@ -9,7 +9,7 @@ export const isBrowser = (): boolean => typeof window !== 'undefined';
 
 export const getSession = async () => {
   try {
-    let session = await Auth.currentSession();
+    const session = await Auth.currentSession();
     return isBrowser() && session ? session : null;
   } catch (error) {
     console.error('There was a problem getting the user', error);
@@ -19,7 +19,7 @@ export const getSession = async () => {
 
 export const getUser = async () => {
   try {
-    let user = await Auth.currentUserInfo();
+    const user = await Auth.currentUserInfo();
     return isBrowser() && user ? user : null;
   } catch (error) {
     console.error('There was a problem getting the user', error);
@@ -30,7 +30,7 @@ export const getUser = async () => {
 export const handleLogin = async ({
   username,
   password,
-}: UserLoginCredentials): Promise<Boolean> => {
+}: UserLoginCredentials): Promise<boolean> => {
   try {
     await Auth.signIn(username, password);
     return true;
@@ -40,19 +40,19 @@ export const handleLogin = async ({
   }
 };
 
-export const isLoggedIn = async (): Promise<Boolean> => {
+export const isLoggedIn = async (): Promise<boolean> => {
   try {
     const user = await getUser();
     return !!user;
   } catch (error) {
     console.error(
       "There was a problem loading the current user's info: ",
-      error
+      error,
     );
     return false;
   }
 };
 
-export const logout = async (callback = () => {}) => {
+export const logout = async () => {
   await Auth.signOut();
 };

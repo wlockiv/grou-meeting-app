@@ -1,62 +1,45 @@
-import {
-  Box,
-  HStack,
-  Stack,
-  Text,
-  useRadio,
-  useRadioGroup,
-} from '@chakra-ui/core';
-import React from 'react';
+import { Box, Button, Stack, Text } from '@chakra-ui/core';
+import React, { useEffect, useState } from 'react';
 import { Group } from '~/graphql/types';
+import { Link, useLocation } from '@reach/router';
 
 type GroupRowProps = {
   group: Group;
   editable: boolean; // ? Repurpose "belongsToGroup"?
-  onDelete(id: string): void; // ? Unecessary?
+  onClick?(): void;
 };
 
 const GroupRow: React.FC<GroupRowProps> = props => {
-  const { group } = props;
-  const { getInputProps, getCheckboxProps } = useRadio(
-    // @ts-ignore
-    props,
-  );
+  const { group, onClick } = props;
+  const [isActive, setIsActive] = useState(false);
+  const location = useLocation();
+  const destination = `/app/group/${group.id}`;
 
-  const input = getInputProps();
-  const checkbox = getCheckboxProps();
+  useEffect(() => {
+    setIsActive(location.pathname === destination);
+  }, [location]);
+
+  const getIsActiveProps = () => ({
+    variant: isActive ? 'solid' : 'outline',
+    colorScheme: isActive ? 'teal' : undefined,
+    shadow: isActive ? 'me' : 'sm',
+  });
 
   return (
-    <Box as="label">
-      <input {...input} />
-      <HStack
-        {...checkbox}
-        cursor="pointer"
-        as={Box}
+    <Box>
+      <Button
+        as={Link}
+        to={destination}
         p={2}
-        shadow="sm"
-        borderWidth="1px"
         borderRadius="md"
-        _checked={{
-          bg: 'teal.600',
-          color: 'white',
-          borderColor: 'teal.600',
-        }}
-        _focus={{
-          boxShadow: 'outline',
-        }}
+        width="100%"
+        onClick={onClick}
+        {...getIsActiveProps()}
       >
-        <Text textTransform="uppercase">{group.name}</Text>
-        {/* <IconButton
-          size="xs"
-          icon={<DeleteIcon />}
-          aria-label={`Delete ${group.name}`}
-          style={{ marginLeft: 'auto' }}
-          onClick={() => {
-            handleDelete(group.id);
-          }}
-          disabled={!editable}
-        /> */}
-      </HStack>
+        <Text textTransform="uppercase" width={'100%'} textAlign={'left'}>
+          {group.name}
+        </Text>
+      </Button>
     </Box>
   );
 };
@@ -64,32 +47,23 @@ const GroupRow: React.FC<GroupRowProps> = props => {
 type GroupListProps = {
   groups: Array<Group>;
   userSub: string;
-  handleDelete(id: string): void;
+  onItemClick?(): void;
 };
 
 const GroupList: React.FC<GroupListProps> = ({
   groups,
   userSub,
-  handleDelete,
+  onItemClick,
 }) => {
-  const { getRootProps, getRadioProps } = useRadioGroup({
-    name: 'group',
-    defaultValue: 'unnamed',
-  });
-
-  const radioGroup = getRootProps();
-
   return (
-    <Stack {...radioGroup}>
+    <Stack>
       {groups.map(group => {
-        const radio = getRadioProps({ value: group.name });
         return (
           <GroupRow
             key={group.name}
             group={group}
             editable={userSub === group.owner}
-            onDelete={handleDelete}
-            {...radio}
+            onClick={onItemClick}
           />
         );
       })}

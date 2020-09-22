@@ -8,24 +8,17 @@
 import { Button, Flex, HStack, Text } from '@chakra-ui/core';
 import { navigate } from '@reach/router';
 import { graphql, useStaticQuery } from 'gatsby';
-import React from 'react';
-import { logout } from '~/services/auth';
+import React, { useEffect, useState } from 'react';
+import { logout, isLoggedIn } from '~/services/auth';
 
 type LayoutProps = {
   children: React.ReactNode;
-  currentUser?:
-    | {
-        email: string;
-      }
-    | undefined;
   title?: string;
 };
 
-const Layout: React.FC<LayoutProps> = ({
-  children,
-  currentUser,
-  title,
-}: LayoutProps) => {
+const Layout: React.FC<LayoutProps> = ({ children, title }: LayoutProps) => {
+  const [loggedIn, setLoggedIn] = useState(false);
+
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -35,6 +28,14 @@ const Layout: React.FC<LayoutProps> = ({
       }
     }
   `);
+
+  useEffect(() => {
+    async function fetchLoginStatus() {
+      setLoggedIn(await isLoggedIn());
+    }
+
+    fetchLoginStatus();
+  }, []);
 
   async function handleLogout(): Promise<void> {
     await logout();
@@ -60,7 +61,7 @@ const Layout: React.FC<LayoutProps> = ({
             Groups {`/ ${title ? title : data.site.siteMetadata.title}`}
           </Text>
         </HStack>
-        {currentUser ? (
+        {loggedIn ? (
           <HStack>
             <Button mr={2} size="sm" onClick={handleLogout}>
               Log Out
@@ -73,7 +74,7 @@ const Layout: React.FC<LayoutProps> = ({
         )}
       </Flex>
       <main>{children}</main>
-      <footer></footer>
+      {/*<footer></footer>*/}
     </>
   );
 };
