@@ -77,6 +77,7 @@ const AppPage: React.FC = () => {
             borderRadius="full"
             colorScheme="pink"
             shadow={'md'}
+            position="absolute"
           />
           <NavDrawer isOpen={isNavOpen} onOpen={onNavOpen} onClose={onNavClose}>
             <GroupList
