@@ -1,78 +1,42 @@
-import React, { useEffect, useState } from 'react';
+import { GraphQLResult } from '@aws-amplify/api';
 import {
   Box,
+  Button,
   Center,
   Container,
   Heading,
-  Text,
+  Skeleton,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
-  Skeleton,
-  Divider,
+  Text,
+  useDisclosure,
 } from '@chakra-ui/core';
 import { SettingsIcon } from '@chakra-ui/icons';
 import { RouteComponentProps } from '@reach/router';
-import { Group } from '~/graphql/types';
 import { API, graphqlOperation } from 'aws-amplify';
-import { GraphQLResult } from '@aws-amplify/api';
-import { getGroup } from '~/graphql/queries';
+import React, { useEffect, useState } from 'react';
 import { GetGroupQuery } from '~/API';
-import { formatAWSDateTimeString } from '~/services/util';
+import { EventList, CreateEventModal } from '~/components';
+import { getGroup } from '~/graphql/queries';
+import { Group } from '~/graphql/types';
 
 type GroupPageURLParams = {
   groupId?: string;
-};
-
-type EventListProps = {
-  meetings: Group['meetings'];
-  hasLoaded: boolean;
-};
-
-const EventList: React.FC<EventListProps> = ({ meetings, hasLoaded }) => {
-  if (!hasLoaded) {
-    return <Skeleton height="110px" />;
-  }
-
-  if (!meetings || !meetings.items || meetings.items.length == 0) {
-    return <Text>No events yet!</Text>;
-  }
-
-  const eventList: Array<React.ReactNode> = [];
-
-  meetings.items.forEach(meeting => {
-    if (meeting != null) {
-      eventList.push(
-        <Box key={meeting.id} borderWidth="1px" borderRadius="md" padding={2}>
-          <Heading size="md">{meeting.title}</Heading>
-          <Text fontSize="sm">
-            {meeting.date ? formatAWSDateTimeString(meeting.date) : 'TBD'}
-          </Text>
-          {meeting.description ? (
-            <>
-              <Divider my={2} />
-              <Text>{meeting.description}</Text>
-            </>
-          ) : null}
-        </Box>,
-      );
-    }
-  });
-
-  return <>{eventList}</>;
 };
 
 const GroupPage: React.FC<RouteComponentProps & GroupPageURLParams> = ({
   groupId,
 }) => {
   // @ts-ignore
-  const [group, setGroup] = useState<Group>({ name: '' });
+  const [group, setGroup] = useState<Group | undefined>();
   const [loading, setLoading] = useState<boolean>(true);
+  const createModalControl = useDisclosure();
 
   useEffect(() => {
-    fetchGroup().then(res => {
+    fetchGroup().then(() => {
       setLoading(false);
     });
   }, [groupId]);
@@ -82,7 +46,7 @@ const GroupPage: React.FC<RouteComponentProps & GroupPageURLParams> = ({
       const { data } = (await API.graphql(
         graphqlOperation(getGroup, { id: groupId }),
       )) as GraphQLResult<GetGroupQuery>;
-      console.log(data);
+
       if (data && data.getGroup) {
         setGroup(data.getGroup);
       }
@@ -91,13 +55,26 @@ const GroupPage: React.FC<RouteComponentProps & GroupPageURLParams> = ({
     }
   }
 
+  if (!loading && !group) {
+    return (
+      <Center>
+        <Text>Could not find the selected group</Text>
+      </Center>
+    );
+  }
+
   return (
     <Container maxW="100vw">
+      <CreateEventModal
+        groupId={groupId}
+        isOpen={createModalControl.isOpen}
+        onClose={createModalControl.onClose}
+      />
       <Center>
         <Box width="100%" maxW="lg" borderWidth="1px" p={4} borderRadius="md">
           <Skeleton isLoaded={!loading}>
             <Heading size="lg" mb={4} isTruncated>
-              {group.name ? group.name : 'loading'}
+              {group && group.name ? group.name : 'Hidden'}
             </Heading>
           </Skeleton>
           <Tabs>
@@ -109,7 +86,18 @@ const GroupPage: React.FC<RouteComponentProps & GroupPageURLParams> = ({
             </TabList>
             <TabPanels>
               <TabPanel px={1}>
-                <EventList meetings={group.meetings} hasLoaded={!loading} />
+                <Button
+                  w="100%"
+                  variant="outline"
+                  colorScheme="teal"
+                  onClick={createModalControl.onOpen}
+                >
+                  Create Event
+                </Button>
+                <EventList
+                  meetings={group && group.meetings}
+                  hasLoaded={!loading}
+                />
               </TabPanel>
               <TabPanel px={1}>
                 <Text>Settings</Text>

@@ -1,0 +1,177 @@
+import { GraphQLResult } from '@aws-amplify/api';
+import {
+  Button,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+} from '@chakra-ui/core';
+import { API, graphqlOperation } from 'aws-amplify';
+import { FormikErrors, useFormik } from 'formik';
+import React from 'react';
+import { CreateMeetingMutation } from '~/API';
+import { createMeeting } from '~/graphql/mutations';
+
+type FormInput = {
+  groupId?: string;
+  title?: string;
+  description?: string;
+  date?: string;
+};
+
+type Props = {
+  groupId?: string;
+  isOpen: boolean;
+  onClose(): void;
+};
+
+function isIsoDate(str: string): boolean {
+  if (!/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/.test(str)) return false;
+  const d = new Date(str);
+  return d.toISOString() === str;
+}
+
+const validate = (values: FormInput) => {
+  const errors: FormikErrors<FormInput> = {};
+  if (!values.title || values.title === '') {
+    errors.title = 'Required';
+  } else if (values.title.length < 2) {
+    errors.title = 'Must be greater than one character.';
+  }
+
+  if (!values.date || values.date == '') {
+    errors.date = 'Required';
+  } else if (!isIsoDate(values.date)) {
+    errors.date = 'Must be a valid UTC ISO date (sorry).';
+  }
+
+  if (values.description && values.description.length < 2) {
+    errors.description = 'Why even put a description?';
+  }
+
+  return errors;
+};
+
+const CreateEventModal: React.FC<Props> = ({ groupId, isOpen, onClose }) => {
+  // Summoned using useDisclosure() in parent
+
+  async function createEvent(variables: FormInput) {
+    try {
+      const { errors } = (await API.graphql(
+        graphqlOperation(createMeeting, { input: variables }),
+      )) as GraphQLResult<CreateMeetingMutation>;
+
+      if (errors) throw new Error(errors.map(e => e.message).join('\n'));
+      // TODO: Move this elsewhere
+      onClose();
+    } catch (error) {
+      console.error('There was a problem creating the new meeting:\n', error);
+    }
+  }
+
+  const {
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    isSubmitting,
+    resetForm,
+  } = useFormik({
+    initialValues: {
+      groupId: groupId || undefined,
+      title: undefined,
+      description: undefined,
+      date: undefined,
+    },
+    validate,
+    onSubmit: createEvent,
+  });
+
+  function handleClose(): void {
+    resetForm();
+    onClose();
+  }
+
+  return (
+    <Modal isOpen={isOpen} onClose={handleClose}>
+      <ModalOverlay>
+        <ModalContent>
+          <ModalHeader>Create an Event</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <form onSubmit={handleSubmit}>
+              <FormControl isRequired display="none">
+                <FormLabel htmlFor="groupId">Group ID</FormLabel>
+                <Input
+                  name="groupId"
+                  value={values.groupId}
+                  onChange={handleChange}
+                />
+              </FormControl>
+              <FormControl
+                mt={4}
+                isRequired
+                isInvalid={touched.title && errors.title ? true : false}
+              >
+                <FormLabel htmlFor="title">Title</FormLabel>
+                <Input
+                  name="title"
+                  value={values.title}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                <FormErrorMessage>{errors.title}</FormErrorMessage>
+              </FormControl>
+              <FormControl
+                mt={4}
+                isInvalid={touched.date && errors.date ? true : false}
+              >
+                <FormLabel htmlFor="date">Date</FormLabel>
+                <Input
+                  name="date"
+                  value={values.date}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                <FormErrorMessage>{errors.date}</FormErrorMessage>
+              </FormControl>
+              <FormControl
+                mt={4}
+                isInvalid={
+                  touched.description && errors.description ? true : false
+                }
+              >
+                <FormLabel htmlFor="description">Description</FormLabel>
+                <Input
+                  name="description"
+                  value={values.description}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                <FormErrorMessage>{errors.description}</FormErrorMessage>
+              </FormControl>
+              <Button
+                mt={6}
+                colorScheme="teal"
+                isLoading={isSubmitting}
+                type="submit"
+              >
+                Create
+              </Button>
+            </form>
+          </ModalBody>
+        </ModalContent>
+      </ModalOverlay>
+    </Modal>
+  );
+};
+
+export default CreateEventModal;
