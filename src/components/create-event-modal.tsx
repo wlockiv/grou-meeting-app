@@ -25,6 +25,21 @@ type FormInput = {
   date?: string;
 };
 
+const mutation = /* GraphQL */ `
+  mutation CreateMeeting(
+    $input: CreateMeetingInput!
+    $condition: ModelMeetingConditionInput
+  ) {
+    createMeeting(input: $input, condition: $condition) {
+      id
+      title
+      date
+      description
+      groupId
+    }
+  }
+`;
+
 type Props = {
   groupId?: string;
   isOpen: boolean;
@@ -59,17 +74,13 @@ const validate = (values: FormInput) => {
 };
 
 const CreateEventModal: React.FC<Props> = ({ groupId, isOpen, onClose }) => {
-  // Summoned using useDisclosure() in parent
-
   async function createEvent(variables: FormInput) {
     try {
       const { errors } = (await API.graphql(
-        graphqlOperation(createMeeting, { input: variables }),
+        graphqlOperation(mutation, { input: variables }),
       )) as GraphQLResult<CreateMeetingMutation>;
 
       if (errors) throw new Error(errors.map(e => e.message).join('\n'));
-      // TODO: Move this elsewhere
-      onClose();
     } catch (error) {
       console.error('There was a problem creating the new meeting:\n', error);
     }
@@ -81,17 +92,19 @@ const CreateEventModal: React.FC<Props> = ({ groupId, isOpen, onClose }) => {
     touched,
     handleChange,
     handleBlur,
-    handleSubmit,
     isSubmitting,
     resetForm,
+    isValid,
+    submitForm,
   } = useFormik({
     initialValues: {
-      groupId: groupId || undefined,
-      title: undefined,
-      description: undefined,
-      date: undefined,
+      groupId: groupId || '',
+      title: '',
+      description: '',
+      date: '',
     },
     validate,
+    validateOnMount: true,
     onSubmit: createEvent,
   });
 
@@ -100,8 +113,14 @@ const CreateEventModal: React.FC<Props> = ({ groupId, isOpen, onClose }) => {
     onClose();
   }
 
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    await submitForm();
+    handleClose();
+  }
+
   return (
-    <Modal isOpen={isOpen} onClose={handleClose}>
+    <Modal isOpen={isOpen} onClose={handleClose} size="xs">
       <ModalOverlay>
         <ModalContent>
           <ModalHeader>Create an Event</ModalHeader>
@@ -117,9 +136,8 @@ const CreateEventModal: React.FC<Props> = ({ groupId, isOpen, onClose }) => {
                 />
               </FormControl>
               <FormControl
-                mt={4}
                 isRequired
-                isInvalid={touched.title && errors.title ? true : false}
+                isInvalid={!!(touched.title && errors.title)}
               >
                 <FormLabel htmlFor="title">Title</FormLabel>
                 <Input
@@ -130,10 +148,7 @@ const CreateEventModal: React.FC<Props> = ({ groupId, isOpen, onClose }) => {
                 />
                 <FormErrorMessage>{errors.title}</FormErrorMessage>
               </FormControl>
-              <FormControl
-                mt={4}
-                isInvalid={touched.date && errors.date ? true : false}
-              >
+              <FormControl mt={4} isInvalid={!!(touched.date && errors.date)}>
                 <FormLabel htmlFor="date">Date</FormLabel>
                 <Input
                   name="date"
@@ -145,9 +160,7 @@ const CreateEventModal: React.FC<Props> = ({ groupId, isOpen, onClose }) => {
               </FormControl>
               <FormControl
                 mt={4}
-                isInvalid={
-                  touched.description && errors.description ? true : false
-                }
+                isInvalid={!!(touched.description && errors.description)}
               >
                 <FormLabel htmlFor="description">Description</FormLabel>
                 <Input
@@ -163,6 +176,7 @@ const CreateEventModal: React.FC<Props> = ({ groupId, isOpen, onClose }) => {
                 colorScheme="teal"
                 isLoading={isSubmitting}
                 type="submit"
+                isDisabled={!isValid}
               >
                 Create
               </Button>

@@ -717,6 +717,39 @@ export type ListMembersQuery = {
   } | null,
 };
 
+export type OnCreateMeetingByGroupSubscriptionVariables = {
+  groupId: string,
+};
+
+export type OnCreateMeetingByGroupSubscription = {
+  onCreateMeetingByGroup:  {
+    __typename: "Meeting",
+    id: string,
+    title: string,
+    date: string | null,
+    description: string,
+    groupId: string,
+    group:  {
+      __typename: "Group",
+      id: string,
+      name: string,
+      meetings:  {
+        __typename: "ModelMeetingConnection",
+        nextToken: string | null,
+      } | null,
+      members:  {
+        __typename: "ModelMemberConnection",
+        nextToken: string | null,
+      } | null,
+      owner: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type OnCreateGroupSubscription = {
   onCreateGroup:  {
     __typename: "Group",

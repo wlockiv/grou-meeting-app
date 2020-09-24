@@ -4,4 +4,9 @@
 
 ## Group Route
 
-- [] Add ability to delete and create events
+- [ ] Meeting CRUD
+  - [x] Create
+  - [x] Read
+  - [ ] Update
+  - [ ] Delete
+  - [ ] Refresh data using Subscriptions

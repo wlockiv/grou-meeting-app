@@ -2,6 +2,32 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateMeetingByGroup = /* GraphQL */ `
+  subscription OnCreateMeetingByGroup($groupId: String!) {
+    onCreateMeetingByGroup(groupId: $groupId) {
+      id
+      title
+      date
+      description
+      groupId
+      group {
+        id
+        name
+        meetings {
+          nextToken
+        }
+        members {
+          nextToken
+        }
+        owner
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateGroup = /* GraphQL */ `
   subscription OnCreateGroup {
     onCreateGroup {

@@ -1,57 +1,61 @@
 type Group
-  @model
-  @auth(
+@model
+@auth(
     rules: [
-      { allow: owner, operations: [create, delete, update] }
-      { allow: groups, groups: ["admin"], operations: [create, delete, update] }
-      { allow: private, operations: [read] }
+        { allow: owner, operations: [create, delete, update] }
+        { allow: groups, groups: ["admin"], operations: [create, delete, update] }
+        { allow: private, operations: [read] }
     ]
-  ) {
-  id: ID!
-  name: String!
-  meetings: [Meeting] @connection(keyName: "byGroup", fields: ["id"])
-  members: [Member] @connection(keyName: "byGroup", fields: ["id"])
-  owner: String
+) {
+    id: ID!
+    name: String!
+    meetings: [Meeting] @connection(keyName: "byGroup", fields: ["id"])
+    members: [Member] @connection(keyName: "byGroup", fields: ["id"])
+    owner: String
 }
 
 type Meeting @model @key(name: "byGroup", fields: ["groupId"]) {
-  id: ID!
-  title: String!
-  date: AWSDateTime
-  description: String!
-  groupId: ID!
-  group: Group @connection(fields: ["groupId"])
+    id: ID!
+    title: String!
+    date: AWSDateTime
+    description: String!
+    groupId: ID!
+    group: Group @connection(fields: ["groupId"])
 }
 
 # TODO: Make it so a member can belong to more than one group (many-to-many)
 type Member @model @key(name: "byGroup", fields: ["groupId"]) {
-  id: ID!
-  firstName: String!
-  lastName: String!
-  email: String!
-  mobileNumber: String!
-  groupId: ID!
-  group: Group @connection(fields: ["groupId"])
+    id: ID!
+    firstName: String!
+    lastName: String!
+    email: String!
+    mobileNumber: String!
+    groupId: ID!
+    group: Group @connection(fields: ["groupId"])
 }
 
 # ! A custom resolver was assigned to auto-gen the ID field
 input CreateGroupInput {
-  name: String!
+    name: String!
 }
 
 # ! A custom resolver was assigned to auto-gen the ID field
 input CreateMeetingInput {
-  groupId: ID!
-  title: String!
-  description: String!
-  date: AWSDateTime
+    groupId: ID!
+    title: String!
+    description: String!
+    date: AWSDateTime
 }
 
 # ! A custom resolver was assigned to auto-gen the ID field
 input CreateMemberInput {
-  firstName: String!
-  lastName: String!
-  email: String!
-  mobileNumber: String!
-  groupId: ID!
+    firstName: String!
+    lastName: String!
+    email: String!
+    mobileNumber: String!
+    groupId: ID!
+}
+
+type Subscription {
+    onCreateMeetingByGroup(groupId: String!): Meeting @aws_subscribe(mutations: ["createMeeting"])
 }

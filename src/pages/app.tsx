@@ -65,8 +65,8 @@ const AppPage: React.FC = () => {
   return (
     <Layout>
       {loading ? (
-        <Center height={'50vh'}>
-          <Spinner size={'lg'} />
+        <Center>
+          <Spinner size={'xl'} />
         </Center>
       ) : (
         <Container maxW={'100vw'}>

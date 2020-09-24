@@ -19,13 +19,20 @@ import { RouteComponentProps } from '@reach/router';
 import { API, graphqlOperation } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
 import { GetGroupQuery } from '~/API';
-import { EventList, CreateEventModal } from '~/components';
-import { getGroup } from '~/graphql/queries';
+import { EventList, CreateEventModal, SEO } from '~/components';
 import { Group } from '~/graphql/types';
 
 type GroupPageURLParams = {
   groupId?: string;
 };
+
+const query = `
+  query GetGroup($id: ID!) {
+    getGroup(id: $id) {
+      name  
+    }
+  }
+`;
 
 const GroupPage: React.FC<RouteComponentProps & GroupPageURLParams> = ({
   groupId,
@@ -44,7 +51,7 @@ const GroupPage: React.FC<RouteComponentProps & GroupPageURLParams> = ({
   async function fetchGroup(): Promise<void> {
     try {
       const { data } = (await API.graphql(
-        graphqlOperation(getGroup, { id: groupId }),
+        graphqlOperation(query, { id: groupId }),
       )) as GraphQLResult<GetGroupQuery>;
 
       if (data && data.getGroup) {
@@ -55,20 +62,30 @@ const GroupPage: React.FC<RouteComponentProps & GroupPageURLParams> = ({
     }
   }
 
-  if (!loading && !group) {
+  if (!groupId || (!loading && !group)) {
     return (
-      <Center>
-        <Text>Could not find the selected group</Text>
+      <Center h="25vh">
+        <Box>
+          <Text>{`Sorry! I couldn't find that group.`}</Text>
+        </Box>
       </Center>
     );
   }
 
+  async function onModalClose() {
+    setLoading(true);
+    createModalControl.onClose();
+    // await fetchGroup();
+    setLoading(false);
+  }
+
   return (
     <Container maxW="100vw">
+      <SEO title={group && group.name ? group.name : 'Error'} />
       <CreateEventModal
         groupId={groupId}
         isOpen={createModalControl.isOpen}
-        onClose={createModalControl.onClose}
+        onClose={onModalClose}
       />
       <Center>
         <Box width="100%" maxW="lg" borderWidth="1px" p={4} borderRadius="md">
@@ -94,10 +111,7 @@ const GroupPage: React.FC<RouteComponentProps & GroupPageURLParams> = ({
                 >
                   Create Event
                 </Button>
-                <EventList
-                  meetings={group && group.meetings}
-                  hasLoaded={!loading}
-                />
+                <EventList groupId={groupId} />
               </TabPanel>
               <TabPanel px={1}>
                 <Text>Settings</Text>

@@ -5,8 +5,9 @@
  */
 
 // You can delete this file if you're not using it
-import React from "react"
+import React from 'react';
+import RootElementWrapper from './wrap-root-element';
 
 export const wrapRootElement = ({ element }) => {
-  return <RootElementWrapper>{element}</RootElementWrapper>
-}
+  return <RootElementWrapper>{element}</RootElementWrapper>;
+};
