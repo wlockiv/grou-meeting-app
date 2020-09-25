@@ -11,6 +11,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  Text,
 } from '@chakra-ui/core';
 import { API, graphqlOperation } from 'aws-amplify';
 import { FormikErrors, useFormik } from 'formik';
@@ -77,7 +78,7 @@ const CreateEventModal: React.FC<Props> = ({ groupId, isOpen, onClose }) => {
   async function createEvent(variables: FormInput) {
     try {
       const { errors } = (await API.graphql(
-        graphqlOperation(mutation, { input: variables }),
+        graphqlOperation(mutation, { input: { ...variables, groupId } }),
       )) as GraphQLResult<CreateMeetingMutation>;
 
       if (errors) throw new Error(errors.map(e => e.message).join('\n'));
@@ -98,7 +99,7 @@ const CreateEventModal: React.FC<Props> = ({ groupId, isOpen, onClose }) => {
     submitForm,
   } = useFormik({
     initialValues: {
-      groupId: groupId || '',
+      // groupId: groupId || '',
       title: '',
       description: '',
       date: '',
@@ -116,7 +117,8 @@ const CreateEventModal: React.FC<Props> = ({ groupId, isOpen, onClose }) => {
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     await submitForm();
-    handleClose();
+    resetForm();
+    onClose();
   }
 
   return (
@@ -127,14 +129,6 @@ const CreateEventModal: React.FC<Props> = ({ groupId, isOpen, onClose }) => {
           <ModalCloseButton />
           <ModalBody pb={6}>
             <form onSubmit={handleSubmit}>
-              <FormControl isRequired display="none">
-                <FormLabel htmlFor="groupId">Group ID</FormLabel>
-                <Input
-                  name="groupId"
-                  value={values.groupId}
-                  onChange={handleChange}
-                />
-              </FormControl>
               <FormControl
                 isRequired
                 isInvalid={!!(touched.title && errors.title)}

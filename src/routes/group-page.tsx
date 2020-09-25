@@ -75,7 +75,6 @@ const GroupPage: React.FC<RouteComponentProps & GroupPageURLParams> = ({
   async function onModalClose() {
     setLoading(true);
     createModalControl.onClose();
-    // await fetchGroup();
     setLoading(false);
   }
 

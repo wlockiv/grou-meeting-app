@@ -1,79 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import { GraphQLResult } from '@aws-amplify/api';
 import {
+  Box,
+  Divider,
+  Flex,
+  Heading,
+  IconButton,
   Skeleton,
   Text,
-  Box,
-  Heading,
-  Divider,
-  IconButton,
-  Flex,
 } from '@chakra-ui/core';
 import { DeleteIcon } from '@chakra-ui/icons';
-import { MeetingList } from '~/graphql/types';
-import { formatAWSDateTimeString } from '~/services/util';
 import { API, graphqlOperation } from 'aws-amplify';
-import { GraphQLResult } from '@aws-amplify/api';
-import { ListMeetingsQuery } from '~/API';
+import React, { useEffect, useState } from 'react';
+import { formatAWSDateTimeString } from '~/services/util';
+import ErrorBoundary from './error-boundary';
+import {
+  deleteMeeting,
+  listMeetings,
+  ListMeetingsQuery,
+  Meeting,
+  onCreateMeetingByGroup,
+} from './graphql';
 
 type EventListProps = {
   groupId: string;
 };
 
-const query = /* GraphQL */ `
-  query ListMeetings($filter: ModelMeetingFilterInput) {
-    listMeetings(filter: $filter) {
-      items {
-        id
-        title
-        date
-        description
-        groupId
-      }
-    }
-  }
-`;
-
-const subscription = /* GraphQL */ `
-  subscription OnCreateMeetingByGroup($groupId: String!) {
-    onCreateMeetingByGroup(groupId: $groupId) {
-      id
-      title
-      date
-      description
-      groupId
-    }
-  }
-`;
-
-const deleteMutation = /* GraphQL */ `
-  mutation DeleteMeeting(
-    $input: DeleteMeetingInput!
-    $condition: ModelMeetingConditionInput
-  ) {
-    deleteMeeting(input: $input, condition: $condition) {
-      id
-      title
-      date
-      description
-      groupId
-    }
-  }
-`;
-
 const EventList: React.FC<EventListProps> = ({ groupId }) => {
-  const [meetings, setMeetings] = useState<MeetingList['items']>([]);
+  const [meetings, setMeetings] = useState<Array<Meeting>>(() => []);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchMeetings().then(data => {
-      if (data && data.listMeetings) setMeetings(data.listMeetings.items);
+      if (data) {
+        setMeetings(data.listMeetings.items);
+      }
       setLoading(false);
     });
   }, [groupId]);
 
   useEffect(() => {
     const meetingSubscription = API.graphql({
-      query: subscription,
+      query: onCreateMeetingByGroup,
       variables: {
         groupId,
       },
@@ -92,7 +59,7 @@ const EventList: React.FC<EventListProps> = ({ groupId }) => {
   async function fetchMeetings(): Promise<ListMeetingsQuery | undefined> {
     try {
       const { data, errors } = (await API.graphql(
-        graphqlOperation(query, {
+        graphqlOperation(listMeetings, {
           filter: { groupId: { eq: groupId } },
         }),
       )) as GraphQLResult<ListMeetingsQuery>;
@@ -111,7 +78,7 @@ const EventList: React.FC<EventListProps> = ({ groupId }) => {
   }
 
   async function handleDelete(id: string) {
-    await API.graphql(graphqlOperation(deleteMutation, { input: { id } }));
+    await API.graphql(graphqlOperation(deleteMeeting, { input: { id } }));
     const data = await fetchMeetings();
     if (data && data.listMeetings) setMeetings(data.listMeetings.items);
   }
@@ -161,7 +128,7 @@ const EventList: React.FC<EventListProps> = ({ groupId }) => {
     );
   });
 
-  return <>{meetingList}</>;
+  return <ErrorBoundary>{meetingList}</ErrorBoundary>;
 };
 
 export default EventList;
