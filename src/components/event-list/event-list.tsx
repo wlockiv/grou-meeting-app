@@ -32,7 +32,9 @@ const EventList: React.FC<EventListProps> = ({ groupId }) => {
   useEffect(() => {
     fetchMeetings().then(data => {
       if (data) {
-        setMeetings(data.listMeetings.items);
+        setMeetings(
+          data.listMeetings.items.sort((a, b) => (a.date > b.date ? 1 : -1)),
+        );
       }
       setLoading(false);
     });
