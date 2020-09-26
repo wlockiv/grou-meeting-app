@@ -1,19 +1,4 @@
-import { string } from 'prop-types';
-
-export const listMeetings = /* GraphQL */ `
-  query ListMeetings($filter: ModelMeetingFilterInput) {
-    listMeetings(filter: $filter) {
-      items {
-        id
-        title
-        date
-        description
-        groupId
-      }
-    }
-  }
-`;
-
+// Types
 export type Meeting = {
   id: string;
   title: string;
@@ -27,6 +12,21 @@ export type ListMeetingsQuery = {
     items: Array<Meeting> | [];
   };
 };
+
+// Operations
+export const listMeetings = /* GraphQL */ `
+  query ListMeetings($filter: ModelMeetingFilterInput) {
+    listMeetings(filter: $filter) {
+      items {
+        id
+        title
+        date
+        description
+        groupId
+      }
+    }
+  }
+`;
 
 export const onCreateMeetingByGroup = /* GraphQL */ `
   subscription OnCreateMeetingByGroup($groupId: String!) {

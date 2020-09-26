@@ -12,7 +12,6 @@ import { DeleteIcon } from '@chakra-ui/icons';
 import { API, graphqlOperation } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
 import { formatAWSDateTimeString } from '~/services/util';
-import ErrorBoundary from './error-boundary';
 import {
   deleteMeeting,
   listMeetings,
@@ -20,6 +19,7 @@ import {
   Meeting,
   onCreateMeetingByGroup,
 } from './graphql';
+import { handleGqlError } from '~/services/error-logging';
 
 type EventListProps = {
   groupId: string;
@@ -67,7 +67,8 @@ const EventList: React.FC<EventListProps> = ({ groupId }) => {
       )) as GraphQLResult<ListMeetingsQuery>;
 
       if (errors) {
-        throw new Error(errors.map(e => e.message).join('\n'));
+        handleGqlError(errors);
+        return;
       }
 
       if (data && data.listMeetings && data.listMeetings.items) {
@@ -75,7 +76,7 @@ const EventList: React.FC<EventListProps> = ({ groupId }) => {
       }
     } catch (error) {
       console.error('There was a problem fetching groups:\n', error);
-      return undefined;
+      return;
     }
   }
 
@@ -130,7 +131,7 @@ const EventList: React.FC<EventListProps> = ({ groupId }) => {
     );
   });
 
-  return <ErrorBoundary>{meetingList}</ErrorBoundary>;
+  return <>{meetingList}</>;
 };
 
 export default EventList;

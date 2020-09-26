@@ -21,6 +21,7 @@ import React, { useEffect, useState } from 'react';
 import { GetGroupQuery } from '~/API';
 import { EventList, CreateEventModal, SEO } from '~/components';
 import { Group } from '~/graphql/types';
+import { handleGqlError } from '~/services/error-logging';
 
 type GroupPageURLParams = {
   groupId?: string;
@@ -37,28 +38,34 @@ const query = `
 const GroupPage: React.FC<RouteComponentProps & GroupPageURLParams> = ({
   groupId,
 }) => {
-  // @ts-ignore
   const [group, setGroup] = useState<Group | undefined>();
   const [loading, setLoading] = useState<boolean>(true);
   const createModalControl = useDisclosure();
 
   useEffect(() => {
-    fetchGroup().then(() => {
+    fetchGroup().then(data => {
+      setGroup(data?.getGroup as Group);
       setLoading(false);
     });
   }, [groupId]);
 
-  async function fetchGroup(): Promise<void> {
+  async function fetchGroup(): Promise<GetGroupQuery | undefined> {
     try {
-      const { data } = (await API.graphql(
+      const { data, errors } = (await API.graphql(
         graphqlOperation(query, { id: groupId }),
       )) as GraphQLResult<GetGroupQuery>;
 
+      if (errors) {
+        handleGqlError(errors);
+        return;
+      }
+
       if (data && data.getGroup) {
-        setGroup(data.getGroup);
+        return data;
       }
     } catch (error) {
       console.error('There was a problem fetching groups:\n', error);
+      return;
     }
   }
 
