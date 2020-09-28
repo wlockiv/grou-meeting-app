@@ -64,7 +64,6 @@ export type DeleteGroupInput = {
 };
 
 export type CreateGroupMemberInput = {
-  id?: string | null,
   groupId: string,
   userId: string,
 };
@@ -104,11 +103,12 @@ export type DeleteGroupMemberInput = {
 };
 
 export type CreateUserInput = {
-  firstName: string,
-  lastName: string,
+  id: string,
+  firstName?: string | null,
+  lastName?: string | null,
   email: string,
-  mobileNumber: string,
-  groupId: string,
+  mobileNumber?: string | null,
+  groupId?: string | null,
 };
 
 export type ModelUserConditionInput = {
@@ -212,8 +212,6 @@ export type CreateGroupMutation = {
       nextToken: string | null,
     } | null,
     owner: string | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -236,8 +234,6 @@ export type UpdateGroupMutation = {
       nextToken: string | null,
     } | null,
     owner: string | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -260,8 +256,6 @@ export type DeleteGroupMutation = {
       nextToken: string | null,
     } | null,
     owner: string | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -281,21 +275,15 @@ export type CreateGroupMemberMutation = {
       id: string,
       name: string,
       owner: string | null,
-      createdAt: string,
-      updatedAt: string,
     },
     user:  {
       __typename: "User",
       id: string,
-      firstName: string,
-      lastName: string,
+      firstName: string | null,
+      lastName: string | null,
       email: string,
-      mobileNumber: string,
-      createdAt: string,
-      updatedAt: string,
+      mobileNumber: string | null,
     },
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -315,21 +303,15 @@ export type UpdateGroupMemberMutation = {
       id: string,
       name: string,
       owner: string | null,
-      createdAt: string,
-      updatedAt: string,
     },
     user:  {
       __typename: "User",
       id: string,
-      firstName: string,
-      lastName: string,
+      firstName: string | null,
+      lastName: string | null,
       email: string,
-      mobileNumber: string,
-      createdAt: string,
-      updatedAt: string,
+      mobileNumber: string | null,
     },
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -349,21 +331,15 @@ export type DeleteGroupMemberMutation = {
       id: string,
       name: string,
       owner: string | null,
-      createdAt: string,
-      updatedAt: string,
     },
     user:  {
       __typename: "User",
       id: string,
-      firstName: string,
-      lastName: string,
+      firstName: string | null,
+      lastName: string | null,
       email: string,
-      mobileNumber: string,
-      createdAt: string,
-      updatedAt: string,
+      mobileNumber: string | null,
     },
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -376,16 +352,14 @@ export type CreateUserMutation = {
   createUser:  {
     __typename: "User",
     id: string,
-    firstName: string,
-    lastName: string,
+    firstName: string | null,
+    lastName: string | null,
     email: string,
-    mobileNumber: string,
+    mobileNumber: string | null,
     groups:  {
       __typename: "ModelGroupMemberConnection",
       nextToken: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -398,16 +372,14 @@ export type UpdateUserMutation = {
   updateUser:  {
     __typename: "User",
     id: string,
-    firstName: string,
-    lastName: string,
+    firstName: string | null,
+    lastName: string | null,
     email: string,
-    mobileNumber: string,
+    mobileNumber: string | null,
     groups:  {
       __typename: "ModelGroupMemberConnection",
       nextToken: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -420,16 +392,14 @@ export type DeleteUserMutation = {
   deleteUser:  {
     __typename: "User",
     id: string,
-    firstName: string,
-    lastName: string,
+    firstName: string | null,
+    lastName: string | null,
     email: string,
-    mobileNumber: string,
+    mobileNumber: string | null,
     groups:  {
       __typename: "ModelGroupMemberConnection",
       nextToken: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -451,11 +421,7 @@ export type CreateEventMutation = {
       id: string,
       name: string,
       owner: string | null,
-      createdAt: string,
-      updatedAt: string,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -477,11 +443,7 @@ export type UpdateEventMutation = {
       id: string,
       name: string,
       owner: string | null,
-      createdAt: string,
-      updatedAt: string,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -503,11 +465,7 @@ export type DeleteEventMutation = {
       id: string,
       name: string,
       owner: string | null,
-      createdAt: string,
-      updatedAt: string,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -529,8 +487,6 @@ export type GetGroupQuery = {
       nextToken: string | null,
     } | null,
     owner: string | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -548,8 +504,6 @@ export type ListGroupsQuery = {
       id: string,
       name: string,
       owner: string | null,
-      createdAt: string,
-      updatedAt: string,
     } | null > | null,
     nextToken: string | null,
   } | null,
@@ -563,16 +517,14 @@ export type GetUserQuery = {
   getUser:  {
     __typename: "User",
     id: string,
-    firstName: string,
-    lastName: string,
+    firstName: string | null,
+    lastName: string | null,
     email: string,
-    mobileNumber: string,
+    mobileNumber: string | null,
     groups:  {
       __typename: "ModelGroupMemberConnection",
       nextToken: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -588,12 +540,10 @@ export type ListUsersQuery = {
     items:  Array< {
       __typename: "User",
       id: string,
-      firstName: string,
-      lastName: string,
+      firstName: string | null,
+      lastName: string | null,
       email: string,
-      mobileNumber: string,
-      createdAt: string,
-      updatedAt: string,
+      mobileNumber: string | null,
     } | null > | null,
     nextToken: string | null,
   } | null,
@@ -616,11 +566,7 @@ export type GetEventQuery = {
       id: string,
       name: string,
       owner: string | null,
-      createdAt: string,
-      updatedAt: string,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -640,8 +586,6 @@ export type ListEventsQuery = {
       date: string | null,
       description: string,
       groupId: string,
-      createdAt: string,
-      updatedAt: string,
     } | null > | null,
     nextToken: string | null,
   } | null,
@@ -664,12 +608,12 @@ export type OnCreateEventByGroupSubscription = {
       id: string,
       name: string,
       owner: string | null,
-      createdAt: string,
-      updatedAt: string,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
+};
+
+export type OnCreateGroupSubscriptionVariables = {
+  owner?: string | null,
 };
 
 export type OnCreateGroupSubscription = {
@@ -686,9 +630,11 @@ export type OnCreateGroupSubscription = {
       nextToken: string | null,
     } | null,
     owner: string | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
+};
+
+export type OnUpdateGroupSubscriptionVariables = {
+  owner?: string | null,
 };
 
 export type OnUpdateGroupSubscription = {
@@ -705,9 +651,11 @@ export type OnUpdateGroupSubscription = {
       nextToken: string | null,
     } | null,
     owner: string | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
+};
+
+export type OnDeleteGroupSubscriptionVariables = {
+  owner?: string | null,
 };
 
 export type OnDeleteGroupSubscription = {
@@ -724,8 +672,6 @@ export type OnDeleteGroupSubscription = {
       nextToken: string | null,
     } | null,
     owner: string | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -740,21 +686,15 @@ export type OnCreateGroupMemberSubscription = {
       id: string,
       name: string,
       owner: string | null,
-      createdAt: string,
-      updatedAt: string,
     },
     user:  {
       __typename: "User",
       id: string,
-      firstName: string,
-      lastName: string,
+      firstName: string | null,
+      lastName: string | null,
       email: string,
-      mobileNumber: string,
-      createdAt: string,
-      updatedAt: string,
+      mobileNumber: string | null,
     },
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -769,21 +709,15 @@ export type OnUpdateGroupMemberSubscription = {
       id: string,
       name: string,
       owner: string | null,
-      createdAt: string,
-      updatedAt: string,
     },
     user:  {
       __typename: "User",
       id: string,
-      firstName: string,
-      lastName: string,
+      firstName: string | null,
+      lastName: string | null,
       email: string,
-      mobileNumber: string,
-      createdAt: string,
-      updatedAt: string,
+      mobileNumber: string | null,
     },
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -798,21 +732,15 @@ export type OnDeleteGroupMemberSubscription = {
       id: string,
       name: string,
       owner: string | null,
-      createdAt: string,
-      updatedAt: string,
     },
     user:  {
       __typename: "User",
       id: string,
-      firstName: string,
-      lastName: string,
+      firstName: string | null,
+      lastName: string | null,
       email: string,
-      mobileNumber: string,
-      createdAt: string,
-      updatedAt: string,
+      mobileNumber: string | null,
     },
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -820,16 +748,14 @@ export type OnCreateUserSubscription = {
   onCreateUser:  {
     __typename: "User",
     id: string,
-    firstName: string,
-    lastName: string,
+    firstName: string | null,
+    lastName: string | null,
     email: string,
-    mobileNumber: string,
+    mobileNumber: string | null,
     groups:  {
       __typename: "ModelGroupMemberConnection",
       nextToken: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -837,16 +763,14 @@ export type OnUpdateUserSubscription = {
   onUpdateUser:  {
     __typename: "User",
     id: string,
-    firstName: string,
-    lastName: string,
+    firstName: string | null,
+    lastName: string | null,
     email: string,
-    mobileNumber: string,
+    mobileNumber: string | null,
     groups:  {
       __typename: "ModelGroupMemberConnection",
       nextToken: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -854,16 +778,14 @@ export type OnDeleteUserSubscription = {
   onDeleteUser:  {
     __typename: "User",
     id: string,
-    firstName: string,
-    lastName: string,
+    firstName: string | null,
+    lastName: string | null,
     email: string,
-    mobileNumber: string,
+    mobileNumber: string | null,
     groups:  {
       __typename: "ModelGroupMemberConnection",
       nextToken: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -880,11 +802,7 @@ export type OnCreateEventSubscription = {
       id: string,
       name: string,
       owner: string | null,
-      createdAt: string,
-      updatedAt: string,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -901,11 +819,7 @@ export type OnUpdateEventSubscription = {
       id: string,
       name: string,
       owner: string | null,
-      createdAt: string,
-      updatedAt: string,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -922,10 +836,6 @@ export type OnDeleteEventSubscription = {
       id: string,
       name: string,
       owner: string | null,
-      createdAt: string,
-      updatedAt: string,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };

@@ -28,10 +28,10 @@ type GroupMember
 # TODO: Make it so a user can belong to more than one group (many-to-many)
 type User @model {
     id: ID!
-    firstName: String!
-    lastName: String!
+    firstName: String
+    lastName: String
     email: String!
-    mobileNumber: String!
+    mobileNumber: String
     groups: [GroupMember] @connection(keyName: "byUser", fields: ["id"])
 }
 
@@ -59,11 +59,18 @@ input CreateEventInput {
 
 # ! A custom resolver was assigned to auto-gen the ID field
 input CreateUserInput {
-    firstName: String!
-    lastName: String!
+    id: ID!
+    firstName: String
+    lastName: String
     email: String!
-    mobileNumber: String!
+    mobileNumber: String
+    groupId: ID
+}
+
+# ! A custom resolver was assigned to auto-gen the ID field
+input CreateGroupMemberInput {
     groupId: ID!
+    userId: ID!
 }
 
 type Subscription {

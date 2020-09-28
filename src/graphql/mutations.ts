@@ -1,5 +1,5 @@
-/* tslint:disable */
-/* eslint-disable */
+// tslint:disable
+// eslint-disable
 // this is an auto generated file. This will be overwritten
 
 export const createGroup = /* GraphQL */ `
@@ -17,8 +17,6 @@ export const createGroup = /* GraphQL */ `
         nextToken
       }
       owner
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -37,8 +35,6 @@ export const updateGroup = /* GraphQL */ `
         nextToken
       }
       owner
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -57,8 +53,6 @@ export const deleteGroup = /* GraphQL */ `
         nextToken
       }
       owner
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -75,8 +69,6 @@ export const createGroupMember = /* GraphQL */ `
         id
         name
         owner
-        createdAt
-        updatedAt
       }
       user {
         id
@@ -84,11 +76,7 @@ export const createGroupMember = /* GraphQL */ `
         lastName
         email
         mobileNumber
-        createdAt
-        updatedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -105,8 +93,6 @@ export const updateGroupMember = /* GraphQL */ `
         id
         name
         owner
-        createdAt
-        updatedAt
       }
       user {
         id
@@ -114,11 +100,7 @@ export const updateGroupMember = /* GraphQL */ `
         lastName
         email
         mobileNumber
-        createdAt
-        updatedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -135,8 +117,6 @@ export const deleteGroupMember = /* GraphQL */ `
         id
         name
         owner
-        createdAt
-        updatedAt
       }
       user {
         id
@@ -144,11 +124,7 @@ export const deleteGroupMember = /* GraphQL */ `
         lastName
         email
         mobileNumber
-        createdAt
-        updatedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -166,8 +142,6 @@ export const createUser = /* GraphQL */ `
       groups {
         nextToken
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -185,8 +159,6 @@ export const updateUser = /* GraphQL */ `
       groups {
         nextToken
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -204,8 +176,6 @@ export const deleteUser = /* GraphQL */ `
       groups {
         nextToken
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -224,11 +194,7 @@ export const createEvent = /* GraphQL */ `
         id
         name
         owner
-        createdAt
-        updatedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -247,11 +213,7 @@ export const updateEvent = /* GraphQL */ `
         id
         name
         owner
-        createdAt
-        updatedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -270,11 +232,7 @@ export const deleteEvent = /* GraphQL */ `
         id
         name
         owner
-        createdAt
-        updatedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;

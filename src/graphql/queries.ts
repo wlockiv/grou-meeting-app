@@ -1,5 +1,5 @@
-/* tslint:disable */
-/* eslint-disable */
+// tslint:disable
+// eslint-disable
 // this is an auto generated file. This will be overwritten
 
 export const getGroup = /* GraphQL */ `
@@ -14,8 +14,6 @@ export const getGroup = /* GraphQL */ `
         nextToken
       }
       owner
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -30,8 +28,6 @@ export const listGroups = /* GraphQL */ `
         id
         name
         owner
-        createdAt
-        updatedAt
       }
       nextToken
     }
@@ -48,8 +44,6 @@ export const getUser = /* GraphQL */ `
       groups {
         nextToken
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -66,8 +60,6 @@ export const listUsers = /* GraphQL */ `
         lastName
         email
         mobileNumber
-        createdAt
-        updatedAt
       }
       nextToken
     }
@@ -85,11 +77,7 @@ export const getEvent = /* GraphQL */ `
         id
         name
         owner
-        createdAt
-        updatedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -106,8 +94,6 @@ export const listEvents = /* GraphQL */ `
         date
         description
         groupId
-        createdAt
-        updatedAt
       }
       nextToken
     }

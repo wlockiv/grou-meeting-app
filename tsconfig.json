@@ -17,5 +17,5 @@
     }
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "public", ".cache", "amplify", ".vscode"]
+  "exclude": ["node_modules", "public", ".cache", "amplify/**/*", ".vscode"]
 }
