@@ -6,11 +6,11 @@ export type Group = Omit<
 >;
 
 export type Meeting = Omit<
-  Exclude<APIt.GetMeetingQuery['getMeeting'], null>,
+  Exclude<APIt.GetEventQuery['getEvent'], null>,
   '__typename'
 >;
 
 export type MeetingList = Omit<
-  Exclude<APIt.ListMeetingsQuery['listMeetings'], null>,
+  Exclude<APIt.ListEventsQuery['listEvents'], null>,
   '__typename'
 >;

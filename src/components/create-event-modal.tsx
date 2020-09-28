@@ -11,13 +11,11 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Text,
 } from '@chakra-ui/core';
 import { API, graphqlOperation } from 'aws-amplify';
 import { FormikErrors, useFormik } from 'formik';
 import React from 'react';
-import { CreateMeetingMutation } from '~/API';
-import { createMeeting } from '~/graphql/mutations';
+import { CreateEventMutation } from '~/API';
 
 type FormInput = {
   groupId?: string;
@@ -27,11 +25,11 @@ type FormInput = {
 };
 
 const mutation = /* GraphQL */ `
-  mutation CreateMeeting(
-    $input: CreateMeetingInput!
-    $condition: ModelMeetingConditionInput
+  mutation CreateEvent(
+    $input: CreateEventInput!
+    $condition: ModelEventConditionInput
   ) {
-    createMeeting(input: $input, condition: $condition) {
+    createEvent(input: $input, condition: $condition) {
       id
       title
       date
@@ -79,7 +77,7 @@ const CreateEventModal: React.FC<Props> = ({ groupId, isOpen, onClose }) => {
     try {
       const { errors } = (await API.graphql(
         graphqlOperation(mutation, { input: { ...variables, groupId } }),
-      )) as GraphQLResult<CreateMeetingMutation>;
+      )) as GraphQLResult<CreateEventMutation>;
 
       if (errors) throw new Error(errors.map(e => e.message).join('\n'));
     } catch (error) {

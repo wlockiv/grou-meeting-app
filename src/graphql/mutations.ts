@@ -10,29 +10,10 @@ export const createGroup = /* GraphQL */ `
     createGroup(input: $input, condition: $condition) {
       id
       name
-      meetings {
-        items {
-          id
-          title
-          date
-          description
-          groupId
-          createdAt
-          updatedAt
-        }
+      events {
         nextToken
       }
       members {
-        items {
-          id
-          firstName
-          lastName
-          email
-          mobileNumber
-          groupId
-          createdAt
-          updatedAt
-        }
         nextToken
       }
       owner
@@ -49,29 +30,10 @@ export const updateGroup = /* GraphQL */ `
     updateGroup(input: $input, condition: $condition) {
       id
       name
-      meetings {
-        items {
-          id
-          title
-          date
-          description
-          groupId
-          createdAt
-          updatedAt
-        }
+      events {
         nextToken
       }
       members {
-        items {
-          id
-          firstName
-          lastName
-          email
-          mobileNumber
-          groupId
-          createdAt
-          updatedAt
-        }
         nextToken
       }
       owner
@@ -88,29 +50,10 @@ export const deleteGroup = /* GraphQL */ `
     deleteGroup(input: $input, condition: $condition) {
       id
       name
-      meetings {
-        items {
-          id
-          title
-          date
-          description
-          groupId
-          createdAt
-          updatedAt
-        }
+      events {
         nextToken
       }
       members {
-        items {
-          id
-          firstName
-          lastName
-          email
-          mobileNumber
-          groupId
-          createdAt
-          updatedAt
-        }
         nextToken
       }
       owner
@@ -119,12 +62,159 @@ export const deleteGroup = /* GraphQL */ `
     }
   }
 `;
-export const createMeeting = /* GraphQL */ `
-  mutation CreateMeeting(
-    $input: CreateMeetingInput!
-    $condition: ModelMeetingConditionInput
+export const createGroupMember = /* GraphQL */ `
+  mutation CreateGroupMember(
+    $input: CreateGroupMemberInput!
+    $condition: ModelGroupMemberConditionInput
   ) {
-    createMeeting(input: $input, condition: $condition) {
+    createGroupMember(input: $input, condition: $condition) {
+      id
+      groupId
+      userId
+      group {
+        id
+        name
+        owner
+        createdAt
+        updatedAt
+      }
+      user {
+        id
+        firstName
+        lastName
+        email
+        mobileNumber
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateGroupMember = /* GraphQL */ `
+  mutation UpdateGroupMember(
+    $input: UpdateGroupMemberInput!
+    $condition: ModelGroupMemberConditionInput
+  ) {
+    updateGroupMember(input: $input, condition: $condition) {
+      id
+      groupId
+      userId
+      group {
+        id
+        name
+        owner
+        createdAt
+        updatedAt
+      }
+      user {
+        id
+        firstName
+        lastName
+        email
+        mobileNumber
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteGroupMember = /* GraphQL */ `
+  mutation DeleteGroupMember(
+    $input: DeleteGroupMemberInput!
+    $condition: ModelGroupMemberConditionInput
+  ) {
+    deleteGroupMember(input: $input, condition: $condition) {
+      id
+      groupId
+      userId
+      group {
+        id
+        name
+        owner
+        createdAt
+        updatedAt
+      }
+      user {
+        id
+        firstName
+        lastName
+        email
+        mobileNumber
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createUser = /* GraphQL */ `
+  mutation CreateUser(
+    $input: CreateUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    createUser(input: $input, condition: $condition) {
+      id
+      firstName
+      lastName
+      email
+      mobileNumber
+      groups {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateUser = /* GraphQL */ `
+  mutation UpdateUser(
+    $input: UpdateUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    updateUser(input: $input, condition: $condition) {
+      id
+      firstName
+      lastName
+      email
+      mobileNumber
+      groups {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteUser = /* GraphQL */ `
+  mutation DeleteUser(
+    $input: DeleteUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    deleteUser(input: $input, condition: $condition) {
+      id
+      firstName
+      lastName
+      email
+      mobileNumber
+      groups {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createEvent = /* GraphQL */ `
+  mutation CreateEvent(
+    $input: CreateEventInput!
+    $condition: ModelEventConditionInput
+  ) {
+    createEvent(input: $input, condition: $condition) {
       id
       title
       date
@@ -133,12 +223,6 @@ export const createMeeting = /* GraphQL */ `
       group {
         id
         name
-        meetings {
-          nextToken
-        }
-        members {
-          nextToken
-        }
         owner
         createdAt
         updatedAt
@@ -148,12 +232,12 @@ export const createMeeting = /* GraphQL */ `
     }
   }
 `;
-export const updateMeeting = /* GraphQL */ `
-  mutation UpdateMeeting(
-    $input: UpdateMeetingInput!
-    $condition: ModelMeetingConditionInput
+export const updateEvent = /* GraphQL */ `
+  mutation UpdateEvent(
+    $input: UpdateEventInput!
+    $condition: ModelEventConditionInput
   ) {
-    updateMeeting(input: $input, condition: $condition) {
+    updateEvent(input: $input, condition: $condition) {
       id
       title
       date
@@ -162,12 +246,6 @@ export const updateMeeting = /* GraphQL */ `
       group {
         id
         name
-        meetings {
-          nextToken
-        }
-        members {
-          nextToken
-        }
         owner
         createdAt
         updatedAt
@@ -177,12 +255,12 @@ export const updateMeeting = /* GraphQL */ `
     }
   }
 `;
-export const deleteMeeting = /* GraphQL */ `
-  mutation DeleteMeeting(
-    $input: DeleteMeetingInput!
-    $condition: ModelMeetingConditionInput
+export const deleteEvent = /* GraphQL */ `
+  mutation DeleteEvent(
+    $input: DeleteEventInput!
+    $condition: ModelEventConditionInput
   ) {
-    deleteMeeting(input: $input, condition: $condition) {
+    deleteEvent(input: $input, condition: $condition) {
       id
       title
       date
@@ -191,102 +269,6 @@ export const deleteMeeting = /* GraphQL */ `
       group {
         id
         name
-        meetings {
-          nextToken
-        }
-        members {
-          nextToken
-        }
-        owner
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createMember = /* GraphQL */ `
-  mutation CreateMember(
-    $input: CreateMemberInput!
-    $condition: ModelMemberConditionInput
-  ) {
-    createMember(input: $input, condition: $condition) {
-      id
-      firstName
-      lastName
-      email
-      mobileNumber
-      groupId
-      group {
-        id
-        name
-        meetings {
-          nextToken
-        }
-        members {
-          nextToken
-        }
-        owner
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateMember = /* GraphQL */ `
-  mutation UpdateMember(
-    $input: UpdateMemberInput!
-    $condition: ModelMemberConditionInput
-  ) {
-    updateMember(input: $input, condition: $condition) {
-      id
-      firstName
-      lastName
-      email
-      mobileNumber
-      groupId
-      group {
-        id
-        name
-        meetings {
-          nextToken
-        }
-        members {
-          nextToken
-        }
-        owner
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteMember = /* GraphQL */ `
-  mutation DeleteMember(
-    $input: DeleteMemberInput!
-    $condition: ModelMemberConditionInput
-  ) {
-    deleteMember(input: $input, condition: $condition) {
-      id
-      firstName
-      lastName
-      email
-      mobileNumber
-      groupId
-      group {
-        id
-        name
-        meetings {
-          nextToken
-        }
-        members {
-          nextToken
-        }
         owner
         createdAt
         updatedAt

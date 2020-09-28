@@ -2,9 +2,9 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateMeetingByGroup = /* GraphQL */ `
-  subscription OnCreateMeetingByGroup($groupId: String!) {
-    onCreateMeetingByGroup(groupId: $groupId) {
+export const onCreateEventByGroup = /* GraphQL */ `
+  subscription OnCreateEventByGroup($groupId: String!) {
+    onCreateEventByGroup(groupId: $groupId) {
       id
       title
       date
@@ -13,12 +13,6 @@ export const onCreateMeetingByGroup = /* GraphQL */ `
       group {
         id
         name
-        meetings {
-          nextToken
-        }
-        members {
-          nextToken
-        }
         owner
         createdAt
         updatedAt
@@ -33,29 +27,10 @@ export const onCreateGroup = /* GraphQL */ `
     onCreateGroup {
       id
       name
-      meetings {
-        items {
-          id
-          title
-          date
-          description
-          groupId
-          createdAt
-          updatedAt
-        }
+      events {
         nextToken
       }
       members {
-        items {
-          id
-          firstName
-          lastName
-          email
-          mobileNumber
-          groupId
-          createdAt
-          updatedAt
-        }
         nextToken
       }
       owner
@@ -69,29 +44,10 @@ export const onUpdateGroup = /* GraphQL */ `
     onUpdateGroup {
       id
       name
-      meetings {
-        items {
-          id
-          title
-          date
-          description
-          groupId
-          createdAt
-          updatedAt
-        }
+      events {
         nextToken
       }
       members {
-        items {
-          id
-          firstName
-          lastName
-          email
-          mobileNumber
-          groupId
-          createdAt
-          updatedAt
-        }
         nextToken
       }
       owner
@@ -105,29 +61,10 @@ export const onDeleteGroup = /* GraphQL */ `
     onDeleteGroup {
       id
       name
-      meetings {
-        items {
-          id
-          title
-          date
-          description
-          groupId
-          createdAt
-          updatedAt
-        }
+      events {
         nextToken
       }
       members {
-        items {
-          id
-          firstName
-          lastName
-          email
-          mobileNumber
-          groupId
-          createdAt
-          updatedAt
-        }
         nextToken
       }
       owner
@@ -136,9 +73,138 @@ export const onDeleteGroup = /* GraphQL */ `
     }
   }
 `;
-export const onCreateMeeting = /* GraphQL */ `
-  subscription OnCreateMeeting {
-    onCreateMeeting {
+export const onCreateGroupMember = /* GraphQL */ `
+  subscription OnCreateGroupMember {
+    onCreateGroupMember {
+      id
+      groupId
+      userId
+      group {
+        id
+        name
+        owner
+        createdAt
+        updatedAt
+      }
+      user {
+        id
+        firstName
+        lastName
+        email
+        mobileNumber
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateGroupMember = /* GraphQL */ `
+  subscription OnUpdateGroupMember {
+    onUpdateGroupMember {
+      id
+      groupId
+      userId
+      group {
+        id
+        name
+        owner
+        createdAt
+        updatedAt
+      }
+      user {
+        id
+        firstName
+        lastName
+        email
+        mobileNumber
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteGroupMember = /* GraphQL */ `
+  subscription OnDeleteGroupMember {
+    onDeleteGroupMember {
+      id
+      groupId
+      userId
+      group {
+        id
+        name
+        owner
+        createdAt
+        updatedAt
+      }
+      user {
+        id
+        firstName
+        lastName
+        email
+        mobileNumber
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateUser = /* GraphQL */ `
+  subscription OnCreateUser {
+    onCreateUser {
+      id
+      firstName
+      lastName
+      email
+      mobileNumber
+      groups {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateUser = /* GraphQL */ `
+  subscription OnUpdateUser {
+    onUpdateUser {
+      id
+      firstName
+      lastName
+      email
+      mobileNumber
+      groups {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteUser = /* GraphQL */ `
+  subscription OnDeleteUser {
+    onDeleteUser {
+      id
+      firstName
+      lastName
+      email
+      mobileNumber
+      groups {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateEvent = /* GraphQL */ `
+  subscription OnCreateEvent {
+    onCreateEvent {
       id
       title
       date
@@ -147,12 +213,6 @@ export const onCreateMeeting = /* GraphQL */ `
       group {
         id
         name
-        meetings {
-          nextToken
-        }
-        members {
-          nextToken
-        }
         owner
         createdAt
         updatedAt
@@ -162,9 +222,9 @@ export const onCreateMeeting = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateMeeting = /* GraphQL */ `
-  subscription OnUpdateMeeting {
-    onUpdateMeeting {
+export const onUpdateEvent = /* GraphQL */ `
+  subscription OnUpdateEvent {
+    onUpdateEvent {
       id
       title
       date
@@ -173,12 +233,6 @@ export const onUpdateMeeting = /* GraphQL */ `
       group {
         id
         name
-        meetings {
-          nextToken
-        }
-        members {
-          nextToken
-        }
         owner
         createdAt
         updatedAt
@@ -188,9 +242,9 @@ export const onUpdateMeeting = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteMeeting = /* GraphQL */ `
-  subscription OnDeleteMeeting {
-    onDeleteMeeting {
+export const onDeleteEvent = /* GraphQL */ `
+  subscription OnDeleteEvent {
+    onDeleteEvent {
       id
       title
       date
@@ -199,93 +253,6 @@ export const onDeleteMeeting = /* GraphQL */ `
       group {
         id
         name
-        meetings {
-          nextToken
-        }
-        members {
-          nextToken
-        }
-        owner
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateMember = /* GraphQL */ `
-  subscription OnCreateMember {
-    onCreateMember {
-      id
-      firstName
-      lastName
-      email
-      mobileNumber
-      groupId
-      group {
-        id
-        name
-        meetings {
-          nextToken
-        }
-        members {
-          nextToken
-        }
-        owner
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateMember = /* GraphQL */ `
-  subscription OnUpdateMember {
-    onUpdateMember {
-      id
-      firstName
-      lastName
-      email
-      mobileNumber
-      groupId
-      group {
-        id
-        name
-        meetings {
-          nextToken
-        }
-        members {
-          nextToken
-        }
-        owner
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteMember = /* GraphQL */ `
-  subscription OnDeleteMember {
-    onDeleteMember {
-      id
-      firstName
-      lastName
-      email
-      mobileNumber
-      groupId
-      group {
-        id
-        name
-        meetings {
-          nextToken
-        }
-        members {
-          nextToken
-        }
         owner
         createdAt
         updatedAt

@@ -1,5 +1,5 @@
 // Types
-export type Meeting = {
+export type Event = {
   id: string;
   title: string;
   date: string;
@@ -7,16 +7,16 @@ export type Meeting = {
   groupId: string;
 };
 
-export type ListMeetingsQuery = {
-  listMeetings: {
-    items: Array<Meeting> | [];
+export type ListEventsQuery = {
+  listEvents: {
+    items: Array<Event>;
   };
 };
 
 // Operations
-export const listMeetings = /* GraphQL */ `
-  query ListMeetings($filter: ModelMeetingFilterInput) {
-    listMeetings(filter: $filter) {
+export const listEvents = /* GraphQL */ `
+  query ListEvents($filter: ModelEventFilterInput) {
+    listEvents(filter: $filter) {
       items {
         id
         title
@@ -28,9 +28,9 @@ export const listMeetings = /* GraphQL */ `
   }
 `;
 
-export const onCreateMeetingByGroup = /* GraphQL */ `
-  subscription OnCreateMeetingByGroup($groupId: String!) {
-    onCreateMeetingByGroup(groupId: $groupId) {
+export const onCreateEventByGroup = /* GraphQL */ `
+  subscription OnCreateEventByGroup($groupId: String!) {
+    onCreateEventByGroup(groupId: $groupId) {
       id
       title
       date
@@ -40,12 +40,12 @@ export const onCreateMeetingByGroup = /* GraphQL */ `
   }
 `;
 
-export const deleteMeeting = /* GraphQL */ `
-  mutation DeleteMeeting(
-    $input: DeleteMeetingInput!
-    $condition: ModelMeetingConditionInput
+export const deleteEvent = /* GraphQL */ `
+  mutation DeleteEvent(
+    $input: DeleteEventInput!
+    $condition: ModelEventConditionInput
   ) {
-    deleteMeeting(input: $input, condition: $condition) {
+    deleteEvent(input: $input, condition: $condition) {
       id
       title
       date

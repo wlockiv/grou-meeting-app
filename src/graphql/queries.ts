@@ -7,29 +7,10 @@ export const getGroup = /* GraphQL */ `
     getGroup(id: $id) {
       id
       name
-      meetings {
-        items {
-          id
-          title
-          date
-          description
-          groupId
-          createdAt
-          updatedAt
-        }
+      events {
         nextToken
       }
       members {
-        items {
-          id
-          firstName
-          lastName
-          email
-          mobileNumber
-          groupId
-          createdAt
-          updatedAt
-        }
         nextToken
       }
       owner
@@ -48,12 +29,6 @@ export const listGroups = /* GraphQL */ `
       items {
         id
         name
-        meetings {
-          nextToken
-        }
-        members {
-          nextToken
-        }
         owner
         createdAt
         updatedAt
@@ -62,9 +37,45 @@ export const listGroups = /* GraphQL */ `
     }
   }
 `;
-export const getMeeting = /* GraphQL */ `
-  query GetMeeting($id: ID!) {
-    getMeeting(id: $id) {
+export const getUser = /* GraphQL */ `
+  query GetUser($id: ID!) {
+    getUser(id: $id) {
+      id
+      firstName
+      lastName
+      email
+      mobileNumber
+      groups {
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listUsers = /* GraphQL */ `
+  query ListUsers(
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        firstName
+        lastName
+        email
+        mobileNumber
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getEvent = /* GraphQL */ `
+  query GetEvent($id: ID!) {
+    getEvent(id: $id) {
       id
       title
       date
@@ -73,12 +84,6 @@ export const getMeeting = /* GraphQL */ `
       group {
         id
         name
-        meetings {
-          nextToken
-        }
-        members {
-          nextToken
-        }
         owner
         createdAt
         updatedAt
@@ -88,81 +93,19 @@ export const getMeeting = /* GraphQL */ `
     }
   }
 `;
-export const listMeetings = /* GraphQL */ `
-  query ListMeetings(
-    $filter: ModelMeetingFilterInput
+export const listEvents = /* GraphQL */ `
+  query ListEvents(
+    $filter: ModelEventFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listMeetings(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listEvents(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         title
         date
         description
         groupId
-        group {
-          id
-          name
-          owner
-          createdAt
-          updatedAt
-        }
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const getMember = /* GraphQL */ `
-  query GetMember($id: ID!) {
-    getMember(id: $id) {
-      id
-      firstName
-      lastName
-      email
-      mobileNumber
-      groupId
-      group {
-        id
-        name
-        meetings {
-          nextToken
-        }
-        members {
-          nextToken
-        }
-        owner
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listMembers = /* GraphQL */ `
-  query ListMembers(
-    $filter: ModelMemberFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listMembers(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        firstName
-        lastName
-        email
-        mobileNumber
-        groupId
-        group {
-          id
-          name
-          owner
-          createdAt
-          updatedAt
-        }
         createdAt
         updatedAt
       }

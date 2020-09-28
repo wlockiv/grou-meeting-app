@@ -13,11 +13,11 @@ import { API, graphqlOperation } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
 import { formatAWSDateTimeString } from '~/services/util';
 import {
-  deleteMeeting,
-  listMeetings,
-  ListMeetingsQuery,
-  Meeting,
-  onCreateMeetingByGroup,
+  deleteEvent,
+  listEvents,
+  ListEventsQuery,
+  Event,
+  onCreateEventByGroup,
 } from './graphql';
 import { handleGqlError } from '~/services/error-logging';
 
@@ -26,14 +26,14 @@ type EventListProps = {
 };
 
 const EventList: React.FC<EventListProps> = ({ groupId }) => {
-  const [meetings, setMeetings] = useState<Array<Meeting>>(() => []);
+  const [events, setEvents] = useState<Array<Event>>(() => []);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchMeetings().then(data => {
+    fetchEvents().then(data => {
       if (data) {
-        setMeetings(
-          data.listMeetings.items.sort((a, b) => (a.date > b.date ? 1 : -1)),
+        setEvents(
+          data.listEvents.items.sort((a, b) => (a.date > b.date ? 1 : -1)),
         );
       }
       setLoading(false);
@@ -41,37 +41,34 @@ const EventList: React.FC<EventListProps> = ({ groupId }) => {
   }, [groupId]);
 
   useEffect(() => {
-    const meetingSubscription = API.graphql({
-      query: onCreateMeetingByGroup,
+    const eventSubscription = API.graphql({
+      query: onCreateEventByGroup,
       variables: {
         groupId,
       },
       // @ts-ignore
     }).subscribe({
       next: ({ value }: { value: any }) => {
-        setMeetings(oldMeetings => [
-          ...oldMeetings,
-          value.data.onCreateMeetingByGroup,
-        ]);
+        setEvents(oldEvents => [...oldEvents, value.data.onCreateEventByGroup]);
       },
     });
-    return () => meetingSubscription.unsubscribe();
+    return () => eventSubscription.unsubscribe();
   }, [groupId]);
 
-  async function fetchMeetings(): Promise<ListMeetingsQuery | undefined> {
+  async function fetchEvents(): Promise<ListEventsQuery | undefined> {
     try {
       const { data, errors } = (await API.graphql(
-        graphqlOperation(listMeetings, {
+        graphqlOperation(listEvents, {
           filter: { groupId: { eq: groupId } },
         }),
-      )) as GraphQLResult<ListMeetingsQuery>;
+      )) as GraphQLResult<ListEventsQuery>;
 
       if (errors) {
         handleGqlError(errors);
         return;
       }
 
-      if (data && data.listMeetings && data.listMeetings.items) {
+      if (data && data.listEvents && data.listEvents.items) {
         return data;
       }
     } catch (error) {
@@ -81,57 +78,57 @@ const EventList: React.FC<EventListProps> = ({ groupId }) => {
   }
 
   async function handleDelete(id: string) {
-    await API.graphql(graphqlOperation(deleteMeeting, { input: { id } }));
-    const data = await fetchMeetings();
-    if (data && data.listMeetings) setMeetings(data.listMeetings.items);
+    await API.graphql(graphqlOperation(deleteEvent, { input: { id } }));
+    const data = await fetchEvents();
+    if (data && data.listEvents) setEvents(data.listEvents.items);
   }
 
   if (loading) {
     return <Skeleton height="110px" />;
   }
 
-  if (!meetings || meetings.length == 0) {
+  if (!events || events.length == 0) {
     return <Text>No events yet!</Text>;
   }
 
-  const meetingList: React.ReactNode = meetings.map(meeting => {
-    if (!meeting) return null;
+  const eventList: React.ReactNode = events.map(event => {
+    if (!event) return null;
     return (
       <Box
-        key={meeting.id}
+        key={event.id}
         borderWidth="1px"
         borderRadius="md"
         padding={2}
         mt={2}
       >
         <Flex>
-          <Heading size="md">{meeting.title}</Heading>
+          <Heading size="md">{event.title}</Heading>
           <IconButton
             size={'xs'}
             ml={'auto'}
-            aria-label={`delete event ${meeting.title}`}
+            aria-label={`delete event ${event.title}`}
             variant={'outline'}
             onClick={async () => {
-              await handleDelete(meeting.id);
+              await handleDelete(event.id);
             }}
           >
             <DeleteIcon />
           </IconButton>
         </Flex>
         <Text fontSize="sm">
-          {meeting.date ? formatAWSDateTimeString(meeting.date) : 'TBD'}
+          {event.date ? formatAWSDateTimeString(event.date) : 'TBD'}
         </Text>
-        {meeting.description ? (
+        {event.description ? (
           <>
             <Divider my={2} />
-            <Text>{meeting.description}</Text>
+            <Text>{event.description}</Text>
           </>
         ) : null}
       </Box>
     );
   });
 
-  return <>{meetingList}</>;
+  return <>{eventList}</>;
 };
 
 export default EventList;

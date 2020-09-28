@@ -63,21 +63,18 @@ export type DeleteGroupInput = {
   id?: string | null,
 };
 
-export type CreateMeetingInput = {
+export type CreateGroupMemberInput = {
+  id?: string | null,
   groupId: string,
-  title: string,
-  description: string,
-  date?: string | null,
+  userId: string,
 };
 
-export type ModelMeetingConditionInput = {
-  title?: ModelStringInput | null,
-  date?: ModelStringInput | null,
-  description?: ModelStringInput | null,
+export type ModelGroupMemberConditionInput = {
   groupId?: ModelIDInput | null,
-  and?: Array< ModelMeetingConditionInput | null > | null,
-  or?: Array< ModelMeetingConditionInput | null > | null,
-  not?: ModelMeetingConditionInput | null,
+  userId?: ModelIDInput | null,
+  and?: Array< ModelGroupMemberConditionInput | null > | null,
+  or?: Array< ModelGroupMemberConditionInput | null > | null,
+  not?: ModelGroupMemberConditionInput | null,
 };
 
 export type ModelIDInput = {
@@ -96,19 +93,17 @@ export type ModelIDInput = {
   size?: ModelSizeInput | null,
 };
 
-export type UpdateMeetingInput = {
+export type UpdateGroupMemberInput = {
   id: string,
-  title?: string | null,
-  date?: string | null,
-  description?: string | null,
   groupId?: string | null,
+  userId?: string | null,
 };
 
-export type DeleteMeetingInput = {
+export type DeleteGroupMemberInput = {
   id?: string | null,
 };
 
-export type CreateMemberInput = {
+export type CreateUserInput = {
   firstName: string,
   lastName: string,
   email: string,
@@ -116,27 +111,54 @@ export type CreateMemberInput = {
   groupId: string,
 };
 
-export type ModelMemberConditionInput = {
+export type ModelUserConditionInput = {
   firstName?: ModelStringInput | null,
   lastName?: ModelStringInput | null,
   email?: ModelStringInput | null,
   mobileNumber?: ModelStringInput | null,
-  groupId?: ModelIDInput | null,
-  and?: Array< ModelMemberConditionInput | null > | null,
-  or?: Array< ModelMemberConditionInput | null > | null,
-  not?: ModelMemberConditionInput | null,
+  and?: Array< ModelUserConditionInput | null > | null,
+  or?: Array< ModelUserConditionInput | null > | null,
+  not?: ModelUserConditionInput | null,
 };
 
-export type UpdateMemberInput = {
+export type UpdateUserInput = {
   id: string,
   firstName?: string | null,
   lastName?: string | null,
   email?: string | null,
   mobileNumber?: string | null,
+};
+
+export type DeleteUserInput = {
+  id?: string | null,
+};
+
+export type CreateEventInput = {
+  groupId: string,
+  title: string,
+  description: string,
+  date?: string | null,
+};
+
+export type ModelEventConditionInput = {
+  title?: ModelStringInput | null,
+  date?: ModelStringInput | null,
+  description?: ModelStringInput | null,
+  groupId?: ModelIDInput | null,
+  and?: Array< ModelEventConditionInput | null > | null,
+  or?: Array< ModelEventConditionInput | null > | null,
+  not?: ModelEventConditionInput | null,
+};
+
+export type UpdateEventInput = {
+  id: string,
+  title?: string | null,
+  date?: string | null,
+  description?: string | null,
   groupId?: string | null,
 };
 
-export type DeleteMemberInput = {
+export type DeleteEventInput = {
   id?: string | null,
 };
 
@@ -149,27 +171,26 @@ export type ModelGroupFilterInput = {
   not?: ModelGroupFilterInput | null,
 };
 
-export type ModelMeetingFilterInput = {
-  id?: ModelIDInput | null,
-  title?: ModelStringInput | null,
-  date?: ModelStringInput | null,
-  description?: ModelStringInput | null,
-  groupId?: ModelIDInput | null,
-  and?: Array< ModelMeetingFilterInput | null > | null,
-  or?: Array< ModelMeetingFilterInput | null > | null,
-  not?: ModelMeetingFilterInput | null,
-};
-
-export type ModelMemberFilterInput = {
+export type ModelUserFilterInput = {
   id?: ModelIDInput | null,
   firstName?: ModelStringInput | null,
   lastName?: ModelStringInput | null,
   email?: ModelStringInput | null,
   mobileNumber?: ModelStringInput | null,
+  and?: Array< ModelUserFilterInput | null > | null,
+  or?: Array< ModelUserFilterInput | null > | null,
+  not?: ModelUserFilterInput | null,
+};
+
+export type ModelEventFilterInput = {
+  id?: ModelIDInput | null,
+  title?: ModelStringInput | null,
+  date?: ModelStringInput | null,
+  description?: ModelStringInput | null,
   groupId?: ModelIDInput | null,
-  and?: Array< ModelMemberFilterInput | null > | null,
-  or?: Array< ModelMemberFilterInput | null > | null,
-  not?: ModelMemberFilterInput | null,
+  and?: Array< ModelEventFilterInput | null > | null,
+  or?: Array< ModelEventFilterInput | null > | null,
+  not?: ModelEventFilterInput | null,
 };
 
 export type CreateGroupMutationVariables = {
@@ -182,33 +203,12 @@ export type CreateGroupMutation = {
     __typename: "Group",
     id: string,
     name: string,
-    meetings:  {
-      __typename: "ModelMeetingConnection",
-      items:  Array< {
-        __typename: "Meeting",
-        id: string,
-        title: string,
-        date: string | null,
-        description: string,
-        groupId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
+    events:  {
+      __typename: "ModelEventConnection",
       nextToken: string | null,
     } | null,
     members:  {
-      __typename: "ModelMemberConnection",
-      items:  Array< {
-        __typename: "Member",
-        id: string,
-        firstName: string,
-        lastName: string,
-        email: string,
-        mobileNumber: string,
-        groupId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
+      __typename: "ModelGroupMemberConnection",
       nextToken: string | null,
     } | null,
     owner: string | null,
@@ -227,33 +227,12 @@ export type UpdateGroupMutation = {
     __typename: "Group",
     id: string,
     name: string,
-    meetings:  {
-      __typename: "ModelMeetingConnection",
-      items:  Array< {
-        __typename: "Meeting",
-        id: string,
-        title: string,
-        date: string | null,
-        description: string,
-        groupId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
+    events:  {
+      __typename: "ModelEventConnection",
       nextToken: string | null,
     } | null,
     members:  {
-      __typename: "ModelMemberConnection",
-      items:  Array< {
-        __typename: "Member",
-        id: string,
-        firstName: string,
-        lastName: string,
-        email: string,
-        mobileNumber: string,
-        groupId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
+      __typename: "ModelGroupMemberConnection",
       nextToken: string | null,
     } | null,
     owner: string | null,
@@ -272,33 +251,12 @@ export type DeleteGroupMutation = {
     __typename: "Group",
     id: string,
     name: string,
-    meetings:  {
-      __typename: "ModelMeetingConnection",
-      items:  Array< {
-        __typename: "Meeting",
-        id: string,
-        title: string,
-        date: string | null,
-        description: string,
-        groupId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
+    events:  {
+      __typename: "ModelEventConnection",
       nextToken: string | null,
     } | null,
     members:  {
-      __typename: "ModelMemberConnection",
-      items:  Array< {
-        __typename: "Member",
-        id: string,
-        firstName: string,
-        lastName: string,
-        email: string,
-        mobileNumber: string,
-        groupId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
+      __typename: "ModelGroupMemberConnection",
       nextToken: string | null,
     } | null,
     owner: string | null,
@@ -307,14 +265,182 @@ export type DeleteGroupMutation = {
   } | null,
 };
 
-export type CreateMeetingMutationVariables = {
-  input: CreateMeetingInput,
-  condition?: ModelMeetingConditionInput | null,
+export type CreateGroupMemberMutationVariables = {
+  input: CreateGroupMemberInput,
+  condition?: ModelGroupMemberConditionInput | null,
 };
 
-export type CreateMeetingMutation = {
-  createMeeting:  {
-    __typename: "Meeting",
+export type CreateGroupMemberMutation = {
+  createGroupMember:  {
+    __typename: "GroupMember",
+    id: string,
+    groupId: string,
+    userId: string,
+    group:  {
+      __typename: "Group",
+      id: string,
+      name: string,
+      owner: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    user:  {
+      __typename: "User",
+      id: string,
+      firstName: string,
+      lastName: string,
+      email: string,
+      mobileNumber: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateGroupMemberMutationVariables = {
+  input: UpdateGroupMemberInput,
+  condition?: ModelGroupMemberConditionInput | null,
+};
+
+export type UpdateGroupMemberMutation = {
+  updateGroupMember:  {
+    __typename: "GroupMember",
+    id: string,
+    groupId: string,
+    userId: string,
+    group:  {
+      __typename: "Group",
+      id: string,
+      name: string,
+      owner: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    user:  {
+      __typename: "User",
+      id: string,
+      firstName: string,
+      lastName: string,
+      email: string,
+      mobileNumber: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteGroupMemberMutationVariables = {
+  input: DeleteGroupMemberInput,
+  condition?: ModelGroupMemberConditionInput | null,
+};
+
+export type DeleteGroupMemberMutation = {
+  deleteGroupMember:  {
+    __typename: "GroupMember",
+    id: string,
+    groupId: string,
+    userId: string,
+    group:  {
+      __typename: "Group",
+      id: string,
+      name: string,
+      owner: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    user:  {
+      __typename: "User",
+      id: string,
+      firstName: string,
+      lastName: string,
+      email: string,
+      mobileNumber: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateUserMutationVariables = {
+  input: CreateUserInput,
+  condition?: ModelUserConditionInput | null,
+};
+
+export type CreateUserMutation = {
+  createUser:  {
+    __typename: "User",
+    id: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    mobileNumber: string,
+    groups:  {
+      __typename: "ModelGroupMemberConnection",
+      nextToken: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateUserMutationVariables = {
+  input: UpdateUserInput,
+  condition?: ModelUserConditionInput | null,
+};
+
+export type UpdateUserMutation = {
+  updateUser:  {
+    __typename: "User",
+    id: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    mobileNumber: string,
+    groups:  {
+      __typename: "ModelGroupMemberConnection",
+      nextToken: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteUserMutationVariables = {
+  input: DeleteUserInput,
+  condition?: ModelUserConditionInput | null,
+};
+
+export type DeleteUserMutation = {
+  deleteUser:  {
+    __typename: "User",
+    id: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    mobileNumber: string,
+    groups:  {
+      __typename: "ModelGroupMemberConnection",
+      nextToken: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateEventMutationVariables = {
+  input: CreateEventInput,
+  condition?: ModelEventConditionInput | null,
+};
+
+export type CreateEventMutation = {
+  createEvent:  {
+    __typename: "Event",
     id: string,
     title: string,
     date: string | null,
@@ -324,14 +450,6 @@ export type CreateMeetingMutation = {
       __typename: "Group",
       id: string,
       name: string,
-      meetings:  {
-        __typename: "ModelMeetingConnection",
-        nextToken: string | null,
-      } | null,
-      members:  {
-        __typename: "ModelMemberConnection",
-        nextToken: string | null,
-      } | null,
       owner: string | null,
       createdAt: string,
       updatedAt: string,
@@ -341,14 +459,14 @@ export type CreateMeetingMutation = {
   } | null,
 };
 
-export type UpdateMeetingMutationVariables = {
-  input: UpdateMeetingInput,
-  condition?: ModelMeetingConditionInput | null,
+export type UpdateEventMutationVariables = {
+  input: UpdateEventInput,
+  condition?: ModelEventConditionInput | null,
 };
 
-export type UpdateMeetingMutation = {
-  updateMeeting:  {
-    __typename: "Meeting",
+export type UpdateEventMutation = {
+  updateEvent:  {
+    __typename: "Event",
     id: string,
     title: string,
     date: string | null,
@@ -358,14 +476,6 @@ export type UpdateMeetingMutation = {
       __typename: "Group",
       id: string,
       name: string,
-      meetings:  {
-        __typename: "ModelMeetingConnection",
-        nextToken: string | null,
-      } | null,
-      members:  {
-        __typename: "ModelMemberConnection",
-        nextToken: string | null,
-      } | null,
       owner: string | null,
       createdAt: string,
       updatedAt: string,
@@ -375,14 +485,14 @@ export type UpdateMeetingMutation = {
   } | null,
 };
 
-export type DeleteMeetingMutationVariables = {
-  input: DeleteMeetingInput,
-  condition?: ModelMeetingConditionInput | null,
+export type DeleteEventMutationVariables = {
+  input: DeleteEventInput,
+  condition?: ModelEventConditionInput | null,
 };
 
-export type DeleteMeetingMutation = {
-  deleteMeeting:  {
-    __typename: "Meeting",
+export type DeleteEventMutation = {
+  deleteEvent:  {
+    __typename: "Event",
     id: string,
     title: string,
     date: string | null,
@@ -392,119 +502,6 @@ export type DeleteMeetingMutation = {
       __typename: "Group",
       id: string,
       name: string,
-      meetings:  {
-        __typename: "ModelMeetingConnection",
-        nextToken: string | null,
-      } | null,
-      members:  {
-        __typename: "ModelMemberConnection",
-        nextToken: string | null,
-      } | null,
-      owner: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type CreateMemberMutationVariables = {
-  input: CreateMemberInput,
-  condition?: ModelMemberConditionInput | null,
-};
-
-export type CreateMemberMutation = {
-  createMember:  {
-    __typename: "Member",
-    id: string,
-    firstName: string,
-    lastName: string,
-    email: string,
-    mobileNumber: string,
-    groupId: string,
-    group:  {
-      __typename: "Group",
-      id: string,
-      name: string,
-      meetings:  {
-        __typename: "ModelMeetingConnection",
-        nextToken: string | null,
-      } | null,
-      members:  {
-        __typename: "ModelMemberConnection",
-        nextToken: string | null,
-      } | null,
-      owner: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type UpdateMemberMutationVariables = {
-  input: UpdateMemberInput,
-  condition?: ModelMemberConditionInput | null,
-};
-
-export type UpdateMemberMutation = {
-  updateMember:  {
-    __typename: "Member",
-    id: string,
-    firstName: string,
-    lastName: string,
-    email: string,
-    mobileNumber: string,
-    groupId: string,
-    group:  {
-      __typename: "Group",
-      id: string,
-      name: string,
-      meetings:  {
-        __typename: "ModelMeetingConnection",
-        nextToken: string | null,
-      } | null,
-      members:  {
-        __typename: "ModelMemberConnection",
-        nextToken: string | null,
-      } | null,
-      owner: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type DeleteMemberMutationVariables = {
-  input: DeleteMemberInput,
-  condition?: ModelMemberConditionInput | null,
-};
-
-export type DeleteMemberMutation = {
-  deleteMember:  {
-    __typename: "Member",
-    id: string,
-    firstName: string,
-    lastName: string,
-    email: string,
-    mobileNumber: string,
-    groupId: string,
-    group:  {
-      __typename: "Group",
-      id: string,
-      name: string,
-      meetings:  {
-        __typename: "ModelMeetingConnection",
-        nextToken: string | null,
-      } | null,
-      members:  {
-        __typename: "ModelMemberConnection",
-        nextToken: string | null,
-      } | null,
       owner: string | null,
       createdAt: string,
       updatedAt: string,
@@ -523,33 +520,12 @@ export type GetGroupQuery = {
     __typename: "Group",
     id: string,
     name: string,
-    meetings:  {
-      __typename: "ModelMeetingConnection",
-      items:  Array< {
-        __typename: "Meeting",
-        id: string,
-        title: string,
-        date: string | null,
-        description: string,
-        groupId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
+    events:  {
+      __typename: "ModelEventConnection",
       nextToken: string | null,
     } | null,
     members:  {
-      __typename: "ModelMemberConnection",
-      items:  Array< {
-        __typename: "Member",
-        id: string,
-        firstName: string,
-        lastName: string,
-        email: string,
-        mobileNumber: string,
-        groupId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
+      __typename: "ModelGroupMemberConnection",
       nextToken: string | null,
     } | null,
     owner: string | null,
@@ -571,14 +547,6 @@ export type ListGroupsQuery = {
       __typename: "Group",
       id: string,
       name: string,
-      meetings:  {
-        __typename: "ModelMeetingConnection",
-        nextToken: string | null,
-      } | null,
-      members:  {
-        __typename: "ModelMemberConnection",
-        nextToken: string | null,
-      } | null,
       owner: string | null,
       createdAt: string,
       updatedAt: string,
@@ -587,129 +555,43 @@ export type ListGroupsQuery = {
   } | null,
 };
 
-export type GetMeetingQueryVariables = {
+export type GetUserQueryVariables = {
   id: string,
 };
 
-export type GetMeetingQuery = {
-  getMeeting:  {
-    __typename: "Meeting",
-    id: string,
-    title: string,
-    date: string | null,
-    description: string,
-    groupId: string,
-    group:  {
-      __typename: "Group",
-      id: string,
-      name: string,
-      meetings:  {
-        __typename: "ModelMeetingConnection",
-        nextToken: string | null,
-      } | null,
-      members:  {
-        __typename: "ModelMemberConnection",
-        nextToken: string | null,
-      } | null,
-      owner: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type ListMeetingsQueryVariables = {
-  filter?: ModelMeetingFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListMeetingsQuery = {
-  listMeetings:  {
-    __typename: "ModelMeetingConnection",
-    items:  Array< {
-      __typename: "Meeting",
-      id: string,
-      title: string,
-      date: string | null,
-      description: string,
-      groupId: string,
-      group:  {
-        __typename: "Group",
-        id: string,
-        name: string,
-        owner: string | null,
-        createdAt: string,
-        updatedAt: string,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null > | null,
-    nextToken: string | null,
-  } | null,
-};
-
-export type GetMemberQueryVariables = {
-  id: string,
-};
-
-export type GetMemberQuery = {
-  getMember:  {
-    __typename: "Member",
+export type GetUserQuery = {
+  getUser:  {
+    __typename: "User",
     id: string,
     firstName: string,
     lastName: string,
     email: string,
     mobileNumber: string,
-    groupId: string,
-    group:  {
-      __typename: "Group",
-      id: string,
-      name: string,
-      meetings:  {
-        __typename: "ModelMeetingConnection",
-        nextToken: string | null,
-      } | null,
-      members:  {
-        __typename: "ModelMemberConnection",
-        nextToken: string | null,
-      } | null,
-      owner: string | null,
-      createdAt: string,
-      updatedAt: string,
+    groups:  {
+      __typename: "ModelGroupMemberConnection",
+      nextToken: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
 };
 
-export type ListMembersQueryVariables = {
-  filter?: ModelMemberFilterInput | null,
+export type ListUsersQueryVariables = {
+  filter?: ModelUserFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListMembersQuery = {
-  listMembers:  {
-    __typename: "ModelMemberConnection",
+export type ListUsersQuery = {
+  listUsers:  {
+    __typename: "ModelUserConnection",
     items:  Array< {
-      __typename: "Member",
+      __typename: "User",
       id: string,
       firstName: string,
       lastName: string,
       email: string,
       mobileNumber: string,
-      groupId: string,
-      group:  {
-        __typename: "Group",
-        id: string,
-        name: string,
-        owner: string | null,
-        createdAt: string,
-        updatedAt: string,
-      } | null,
       createdAt: string,
       updatedAt: string,
     } | null > | null,
@@ -717,13 +599,13 @@ export type ListMembersQuery = {
   } | null,
 };
 
-export type OnCreateMeetingByGroupSubscriptionVariables = {
-  groupId: string,
+export type GetEventQueryVariables = {
+  id: string,
 };
 
-export type OnCreateMeetingByGroupSubscription = {
-  onCreateMeetingByGroup:  {
-    __typename: "Meeting",
+export type GetEventQuery = {
+  getEvent:  {
+    __typename: "Event",
     id: string,
     title: string,
     date: string | null,
@@ -733,14 +615,54 @@ export type OnCreateMeetingByGroupSubscription = {
       __typename: "Group",
       id: string,
       name: string,
-      meetings:  {
-        __typename: "ModelMeetingConnection",
-        nextToken: string | null,
-      } | null,
-      members:  {
-        __typename: "ModelMemberConnection",
-        nextToken: string | null,
-      } | null,
+      owner: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListEventsQueryVariables = {
+  filter?: ModelEventFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListEventsQuery = {
+  listEvents:  {
+    __typename: "ModelEventConnection",
+    items:  Array< {
+      __typename: "Event",
+      id: string,
+      title: string,
+      date: string | null,
+      description: string,
+      groupId: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
+export type OnCreateEventByGroupSubscriptionVariables = {
+  groupId: string,
+};
+
+export type OnCreateEventByGroupSubscription = {
+  onCreateEventByGroup:  {
+    __typename: "Event",
+    id: string,
+    title: string,
+    date: string | null,
+    description: string,
+    groupId: string,
+    group:  {
+      __typename: "Group",
+      id: string,
+      name: string,
       owner: string | null,
       createdAt: string,
       updatedAt: string,
@@ -755,33 +677,12 @@ export type OnCreateGroupSubscription = {
     __typename: "Group",
     id: string,
     name: string,
-    meetings:  {
-      __typename: "ModelMeetingConnection",
-      items:  Array< {
-        __typename: "Meeting",
-        id: string,
-        title: string,
-        date: string | null,
-        description: string,
-        groupId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
+    events:  {
+      __typename: "ModelEventConnection",
       nextToken: string | null,
     } | null,
     members:  {
-      __typename: "ModelMemberConnection",
-      items:  Array< {
-        __typename: "Member",
-        id: string,
-        firstName: string,
-        lastName: string,
-        email: string,
-        mobileNumber: string,
-        groupId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
+      __typename: "ModelGroupMemberConnection",
       nextToken: string | null,
     } | null,
     owner: string | null,
@@ -795,33 +696,12 @@ export type OnUpdateGroupSubscription = {
     __typename: "Group",
     id: string,
     name: string,
-    meetings:  {
-      __typename: "ModelMeetingConnection",
-      items:  Array< {
-        __typename: "Meeting",
-        id: string,
-        title: string,
-        date: string | null,
-        description: string,
-        groupId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
+    events:  {
+      __typename: "ModelEventConnection",
       nextToken: string | null,
     } | null,
     members:  {
-      __typename: "ModelMemberConnection",
-      items:  Array< {
-        __typename: "Member",
-        id: string,
-        firstName: string,
-        lastName: string,
-        email: string,
-        mobileNumber: string,
-        groupId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
+      __typename: "ModelGroupMemberConnection",
       nextToken: string | null,
     } | null,
     owner: string | null,
@@ -835,33 +715,12 @@ export type OnDeleteGroupSubscription = {
     __typename: "Group",
     id: string,
     name: string,
-    meetings:  {
-      __typename: "ModelMeetingConnection",
-      items:  Array< {
-        __typename: "Meeting",
-        id: string,
-        title: string,
-        date: string | null,
-        description: string,
-        groupId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
+    events:  {
+      __typename: "ModelEventConnection",
       nextToken: string | null,
     } | null,
     members:  {
-      __typename: "ModelMemberConnection",
-      items:  Array< {
-        __typename: "Member",
-        id: string,
-        firstName: string,
-        lastName: string,
-        email: string,
-        mobileNumber: string,
-        groupId: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null > | null,
+      __typename: "ModelGroupMemberConnection",
       nextToken: string | null,
     } | null,
     owner: string | null,
@@ -870,9 +729,147 @@ export type OnDeleteGroupSubscription = {
   } | null,
 };
 
-export type OnCreateMeetingSubscription = {
-  onCreateMeeting:  {
-    __typename: "Meeting",
+export type OnCreateGroupMemberSubscription = {
+  onCreateGroupMember:  {
+    __typename: "GroupMember",
+    id: string,
+    groupId: string,
+    userId: string,
+    group:  {
+      __typename: "Group",
+      id: string,
+      name: string,
+      owner: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    user:  {
+      __typename: "User",
+      id: string,
+      firstName: string,
+      lastName: string,
+      email: string,
+      mobileNumber: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateGroupMemberSubscription = {
+  onUpdateGroupMember:  {
+    __typename: "GroupMember",
+    id: string,
+    groupId: string,
+    userId: string,
+    group:  {
+      __typename: "Group",
+      id: string,
+      name: string,
+      owner: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    user:  {
+      __typename: "User",
+      id: string,
+      firstName: string,
+      lastName: string,
+      email: string,
+      mobileNumber: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteGroupMemberSubscription = {
+  onDeleteGroupMember:  {
+    __typename: "GroupMember",
+    id: string,
+    groupId: string,
+    userId: string,
+    group:  {
+      __typename: "Group",
+      id: string,
+      name: string,
+      owner: string | null,
+      createdAt: string,
+      updatedAt: string,
+    },
+    user:  {
+      __typename: "User",
+      id: string,
+      firstName: string,
+      lastName: string,
+      email: string,
+      mobileNumber: string,
+      createdAt: string,
+      updatedAt: string,
+    },
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateUserSubscription = {
+  onCreateUser:  {
+    __typename: "User",
+    id: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    mobileNumber: string,
+    groups:  {
+      __typename: "ModelGroupMemberConnection",
+      nextToken: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateUserSubscription = {
+  onUpdateUser:  {
+    __typename: "User",
+    id: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    mobileNumber: string,
+    groups:  {
+      __typename: "ModelGroupMemberConnection",
+      nextToken: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteUserSubscription = {
+  onDeleteUser:  {
+    __typename: "User",
+    id: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    mobileNumber: string,
+    groups:  {
+      __typename: "ModelGroupMemberConnection",
+      nextToken: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateEventSubscription = {
+  onCreateEvent:  {
+    __typename: "Event",
     id: string,
     title: string,
     date: string | null,
@@ -882,14 +879,6 @@ export type OnCreateMeetingSubscription = {
       __typename: "Group",
       id: string,
       name: string,
-      meetings:  {
-        __typename: "ModelMeetingConnection",
-        nextToken: string | null,
-      } | null,
-      members:  {
-        __typename: "ModelMemberConnection",
-        nextToken: string | null,
-      } | null,
       owner: string | null,
       createdAt: string,
       updatedAt: string,
@@ -899,9 +888,9 @@ export type OnCreateMeetingSubscription = {
   } | null,
 };
 
-export type OnUpdateMeetingSubscription = {
-  onUpdateMeeting:  {
-    __typename: "Meeting",
+export type OnUpdateEventSubscription = {
+  onUpdateEvent:  {
+    __typename: "Event",
     id: string,
     title: string,
     date: string | null,
@@ -911,14 +900,6 @@ export type OnUpdateMeetingSubscription = {
       __typename: "Group",
       id: string,
       name: string,
-      meetings:  {
-        __typename: "ModelMeetingConnection",
-        nextToken: string | null,
-      } | null,
-      members:  {
-        __typename: "ModelMemberConnection",
-        nextToken: string | null,
-      } | null,
       owner: string | null,
       createdAt: string,
       updatedAt: string,
@@ -928,9 +909,9 @@ export type OnUpdateMeetingSubscription = {
   } | null,
 };
 
-export type OnDeleteMeetingSubscription = {
-  onDeleteMeeting:  {
-    __typename: "Meeting",
+export type OnDeleteEventSubscription = {
+  onDeleteEvent:  {
+    __typename: "Event",
     id: string,
     title: string,
     date: string | null,
@@ -940,104 +921,6 @@ export type OnDeleteMeetingSubscription = {
       __typename: "Group",
       id: string,
       name: string,
-      meetings:  {
-        __typename: "ModelMeetingConnection",
-        nextToken: string | null,
-      } | null,
-      members:  {
-        __typename: "ModelMemberConnection",
-        nextToken: string | null,
-      } | null,
-      owner: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnCreateMemberSubscription = {
-  onCreateMember:  {
-    __typename: "Member",
-    id: string,
-    firstName: string,
-    lastName: string,
-    email: string,
-    mobileNumber: string,
-    groupId: string,
-    group:  {
-      __typename: "Group",
-      id: string,
-      name: string,
-      meetings:  {
-        __typename: "ModelMeetingConnection",
-        nextToken: string | null,
-      } | null,
-      members:  {
-        __typename: "ModelMemberConnection",
-        nextToken: string | null,
-      } | null,
-      owner: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnUpdateMemberSubscription = {
-  onUpdateMember:  {
-    __typename: "Member",
-    id: string,
-    firstName: string,
-    lastName: string,
-    email: string,
-    mobileNumber: string,
-    groupId: string,
-    group:  {
-      __typename: "Group",
-      id: string,
-      name: string,
-      meetings:  {
-        __typename: "ModelMeetingConnection",
-        nextToken: string | null,
-      } | null,
-      members:  {
-        __typename: "ModelMemberConnection",
-        nextToken: string | null,
-      } | null,
-      owner: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnDeleteMemberSubscription = {
-  onDeleteMember:  {
-    __typename: "Member",
-    id: string,
-    firstName: string,
-    lastName: string,
-    email: string,
-    mobileNumber: string,
-    groupId: string,
-    group:  {
-      __typename: "Group",
-      id: string,
-      name: string,
-      meetings:  {
-        __typename: "ModelMeetingConnection",
-        nextToken: string | null,
-      } | null,
-      members:  {
-        __typename: "ModelMemberConnection",
-        nextToken: string | null,
-      } | null,
       owner: string | null,
       createdAt: string,
       updatedAt: string,

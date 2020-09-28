@@ -6,15 +6,15 @@ import { GroupList, Layout, NavDrawer } from '~/components';
 import {
   Center,
   Container,
-  useDisclosure,
-  Spinner,
   IconButton,
+  Spinner,
+  useDisclosure,
 } from '@chakra-ui/core';
 import { Group } from '~/graphql/types';
 import { getUser, isLoggedIn } from '~/services/auth';
 import { API, graphqlOperation } from 'aws-amplify';
-import { listGroups } from '~/graphql/queries';
 import { GraphQLResult } from '@aws-amplify/api';
+import { listGroups } from '~/graphql/queries';
 import * as APIt from '~/API';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import GroupPage from '~/routes/group-page';

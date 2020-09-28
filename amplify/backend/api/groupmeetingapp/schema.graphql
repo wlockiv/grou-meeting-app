@@ -9,27 +9,37 @@ type Group
 ) {
     id: ID!
     name: String!
-    meetings: [Meeting] @connection(keyName: "byGroup", fields: ["id"])
-    members: [Member] @connection(keyName: "byGroup", fields: ["id"])
+    events: [Event] @connection(keyName: "byGroup", fields: ["id"])
+    members: [GroupMember] @connection(keyName: "byGroup", fields: ["id"])
     owner: String
 }
 
-type Meeting @model @key(name: "byGroup", fields: ["groupId"]) {
+type GroupMember
+@model(queries: null)
+@key(name: "byGroup", fields: ["groupId", "userId"])
+@key(name: "byUser", fields: ["userId", "groupId"]) {
     id: ID!
-    title: String!
-    date: AWSDateTime
-    description: String!
     groupId: ID!
-    group: Group @connection(fields: ["groupId"])
+    userId: ID!
+    group: Group! @connection(fields: ["groupId"])
+    user: User! @connection(fields: ["userId"])
 }
 
-# TODO: Make it so a member can belong to more than one group (many-to-many)
-type Member @model @key(name: "byGroup", fields: ["groupId"]) {
+# TODO: Make it so a user can belong to more than one group (many-to-many)
+type User @model {
     id: ID!
     firstName: String!
     lastName: String!
     email: String!
     mobileNumber: String!
+    groups: [GroupMember] @connection(keyName: "byUser", fields: ["id"])
+}
+
+type Event @model @key(name: "byGroup", fields: ["groupId"]) {
+    id: ID!
+    title: String!
+    date: AWSDateTime
+    description: String!
     groupId: ID!
     group: Group @connection(fields: ["groupId"])
 }
@@ -40,7 +50,7 @@ input CreateGroupInput {
 }
 
 # ! A custom resolver was assigned to auto-gen the ID field
-input CreateMeetingInput {
+input CreateEventInput {
     groupId: ID!
     title: String!
     description: String!
@@ -48,7 +58,7 @@ input CreateMeetingInput {
 }
 
 # ! A custom resolver was assigned to auto-gen the ID field
-input CreateMemberInput {
+input CreateUserInput {
     firstName: String!
     lastName: String!
     email: String!
@@ -57,5 +67,5 @@ input CreateMemberInput {
 }
 
 type Subscription {
-    onCreateMeetingByGroup(groupId: String!): Meeting @aws_subscribe(mutations: ["createMeeting"])
+    onCreateEventByGroup(groupId: String!): Event @aws_subscribe(mutations: ["createEvent"])
 }
