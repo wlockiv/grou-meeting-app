@@ -1,5 +1,5 @@
-// tslint:disable
-// eslint-disable
+/* tslint:disable */
+/* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
 export const onCreateEventByGroup = /* GraphQL */ `
@@ -14,13 +14,17 @@ export const onCreateEventByGroup = /* GraphQL */ `
         id
         name
         owner
+        createdAt
+        updatedAt
       }
+      createdAt
+      updatedAt
     }
   }
 `;
 export const onCreateGroup = /* GraphQL */ `
-  subscription OnCreateGroup($owner: String) {
-    onCreateGroup(owner: $owner) {
+  subscription OnCreateGroup {
+    onCreateGroup {
       id
       name
       events {
@@ -30,12 +34,14 @@ export const onCreateGroup = /* GraphQL */ `
         nextToken
       }
       owner
+      createdAt
+      updatedAt
     }
   }
 `;
 export const onUpdateGroup = /* GraphQL */ `
-  subscription OnUpdateGroup($owner: String) {
-    onUpdateGroup(owner: $owner) {
+  subscription OnUpdateGroup {
+    onUpdateGroup {
       id
       name
       events {
@@ -45,12 +51,14 @@ export const onUpdateGroup = /* GraphQL */ `
         nextToken
       }
       owner
+      createdAt
+      updatedAt
     }
   }
 `;
 export const onDeleteGroup = /* GraphQL */ `
-  subscription OnDeleteGroup($owner: String) {
-    onDeleteGroup(owner: $owner) {
+  subscription OnDeleteGroup {
+    onDeleteGroup {
       id
       name
       events {
@@ -60,6 +68,8 @@ export const onDeleteGroup = /* GraphQL */ `
         nextToken
       }
       owner
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -73,6 +83,8 @@ export const onCreateGroupMember = /* GraphQL */ `
         id
         name
         owner
+        createdAt
+        updatedAt
       }
       user {
         id
@@ -80,7 +92,11 @@ export const onCreateGroupMember = /* GraphQL */ `
         lastName
         email
         mobileNumber
+        createdAt
+        updatedAt
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -94,6 +110,8 @@ export const onUpdateGroupMember = /* GraphQL */ `
         id
         name
         owner
+        createdAt
+        updatedAt
       }
       user {
         id
@@ -101,7 +119,11 @@ export const onUpdateGroupMember = /* GraphQL */ `
         lastName
         email
         mobileNumber
+        createdAt
+        updatedAt
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -115,6 +137,8 @@ export const onDeleteGroupMember = /* GraphQL */ `
         id
         name
         owner
+        createdAt
+        updatedAt
       }
       user {
         id
@@ -122,7 +146,11 @@ export const onDeleteGroupMember = /* GraphQL */ `
         lastName
         email
         mobileNumber
+        createdAt
+        updatedAt
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -137,6 +165,8 @@ export const onCreateUser = /* GraphQL */ `
       groups {
         nextToken
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -151,6 +181,8 @@ export const onUpdateUser = /* GraphQL */ `
       groups {
         nextToken
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -165,6 +197,8 @@ export const onDeleteUser = /* GraphQL */ `
       groups {
         nextToken
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -180,7 +214,11 @@ export const onCreateEvent = /* GraphQL */ `
         id
         name
         owner
+        createdAt
+        updatedAt
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -196,7 +234,11 @@ export const onUpdateEvent = /* GraphQL */ `
         id
         name
         owner
+        createdAt
+        updatedAt
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -212,7 +254,11 @@ export const onDeleteEvent = /* GraphQL */ `
         id
         name
         owner
+        createdAt
+        updatedAt
       }
+      createdAt
+      updatedAt
     }
   }
 `;

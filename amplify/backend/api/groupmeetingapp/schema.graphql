@@ -25,8 +25,17 @@ type GroupMember
     user: User! @connection(fields: ["userId"])
 }
 
-# TODO: Make it so a user can belong to more than one group (many-to-many)
-type User @model {
+# TODO: Add IAM Auth
+type User
+@model
+@auth(
+    rules: [
+        { allow: owner, operations: [create, delete, update] }
+        { allow: groups, groups: ["admin"], operations: [create, delete, update] }
+        { allow: private, provider: iam, operations: [create, update, delete] }
+        { allow: private, operations: [read] }
+    ]
+) {
     id: ID!
     firstName: String
     lastName: String

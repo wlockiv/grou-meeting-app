@@ -1,6 +1,4 @@
 {
-    "identityPoolName": "groupmeetingapp8cd75c07_identitypool_8cd75c07",
-    "allowUnauthenticatedIdentities": false,
     "resourceNameTruncated": "groupm8cd75c07",
     "userPoolName": "groupmeetingapp8cd75c07_userpool_8cd75c07",
     "autoVerifiedAttributes": [
@@ -32,7 +30,7 @@
     "userpoolClientSetAttributes": false,
     "sharedId": "8cd75c07",
     "resourceName": "groupmeetingapp8cd75c07",
-    "authSelections": "identityPoolAndUserPool",
+    "authSelections": "userPoolOnly",
     "authRoleArn": {
         "Fn::GetAtt": [
             "AuthRole",
@@ -45,11 +43,29 @@
             "Arn"
         ]
     },
-    "useDefault": "default",
+    "useDefault": "manual",
     "usernameAttributes": [
         "email"
     ],
     "userPoolGroupList": [],
     "serviceName": "Cognito",
-    "dependsOn": []
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "groupmeetingapp8cd75c07PostConfirmation",
+            "triggerProvider": "Cognito",
+            "attributes": [
+                "Arn",
+                "Name"
+            ]
+        }
+    ],
+    "userPoolGroups": false,
+    "adminQueries": false,
+    "triggers": "{\n  \"PostConfirmation\": [\n    \"custom\"\n  ]\n}",
+    "hostedUI": false,
+    "parentStack": {
+        "Ref": "AWS::StackId"
+    },
+    "permissions": []
 }
